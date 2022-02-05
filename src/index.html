@@ -4,13 +4,14 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../dist/main.css">
   <title>Console</title>
 </head>
-<body>
-  <div class="text-container">
-    <input id="console" value="" type="text">
+<body class="bg-neutral-800">
+  <div class="flex justify-center p-10">
+    <textarea class="resize-none w-2/4 bg-neutral-700 focus:outline-none" id="console" value="" type="text"></textarea>
+    <div class="text-neutral-100 w-2/4 border-2 border-solid border-neutral-700 bg-neutral-600" id="output"></div>
   </div>
-  <div id="output"></div>
  <script src="index.js"></script>
 </body>
 </html>
