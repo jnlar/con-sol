@@ -8,9 +8,20 @@
   <title>Console</title>
 </head>
 <body class="bg-neutral-800">
-  <div class="flex justify-center p-10">
-    <textarea class="resize-none w-2/4 bg-neutral-700 focus:outline-none" id="console" value="" type="text"></textarea>
-    <div class="text-neutral-100 w-2/4 border-2 border-solid border-neutral-700 bg-neutral-600" id="output"></div>
+  <div class="flex justify-center h-screen p-10">
+    <div class="w-8/12 flex">
+      <div id="input-container" class="">
+        <input 
+          class="w-2/4 bg-neutral-700 focus:outline-none" 
+          id="console" 
+          value="" 
+          type="text">
+      </div>
+      <div 
+        class="text-neutral-100 w-2/4 border-2 border-solid border-neutral-700 bg-neutral-600" 
+        id="output">
+      </div>
+    </div>
   </div>
  <script src="index.js"></script>
 </body>
