@@ -8,9 +8,13 @@ let state;
 // - implement shift + enter newline
 function bindKeyEvents() {
   textConsole.addEventListener('keydown', (e) => {
+    if (e.key == 'ArrowUp') {
+      handleHistory();
+    }
+
     if (e.key == 'l' && e.ctrlKey) {
       e.preventDefault();
-      return cursorToTop();
+      cursorToTop();
     }
 
     if (e.key === 'Enter' && e.target.value !== '') {
@@ -20,9 +24,27 @@ function bindKeyEvents() {
         return state.clearingPastInputs = false;
       }
 
-      return prependPastInput();
+      prependPastInput();
+      state.resetHistory();
     }
   })
+}
+
+function setInputToHistory() {
+  return textConsole.value = state.inputs[state.historyPos()];
+}
+
+function handleHistory() {
+  if (state.inputs[state.historyPos()] !== undefined) {
+    if (!state.hasTraversedHistory) {
+      state.hasTraversedHistory = true;
+      setInputToHistory();
+      return state.traverseCount++
+    }
+
+    setInputToHistory();
+    state.traverseCount++;
+  } 
 }
 
 function cursorToTop() {
@@ -31,21 +53,19 @@ function cursorToTop() {
   });
 }
 
-function outputWasError() {
-  return output.classList.contains('text-red-500');
-}
-
 function executeInput(input) {
   textConsole.value = '';
-  state.inputs.push(input);
-
-  if (outputWasError()) {
-    output.classList.remove('text-red-500');
-  }
 
   if (input === 'clear') {
+    state.inputs = [];
     state.clearingPastInputs = true;
     return cursorToTop();
+  }
+
+  state.inputs.push(input);
+
+  if (output.classList.contains(state.errorColor)) {
+    output.classList.remove(state.errorColor);
   }
 
   try {
@@ -53,7 +73,7 @@ function executeInput(input) {
     let fn = new Function('return ' + input)();
     return output.innerHTML = fn;
   } catch(e) {
-    output.classList.add('text-red-500');
+    output.classList.add(state.errorColor);
     output.innerHTML = e;
     throw new Error(e);
   }
@@ -85,10 +105,21 @@ function prependPastInput() {
 
 function init() {
   bindKeyEvents();
+
   return state = {
     inputs: [],
+    hasTraversedHistory: false,
+    historyPos: () => {
+      return state.inputs.length - state.traverseCount; 
+    },
+    resetHistory: () => {
+      state.hasTraversedHistory = false;
+      state.traverseCount = 1;
+    },
+    traverseCount: 1,
     isFirstPrepended: true,
     clearingPastInputs: false,
+    errorColor: 'text-red-600'
   }
 }
 
