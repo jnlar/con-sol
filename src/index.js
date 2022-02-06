@@ -1,20 +1,26 @@
 const textConsole = document.getElementById('console');
 const inputContainer = document.getElementById('input-container');
-const output = document.getElementById('output')
+const output = document.getElementById('output');
 
-const inputs = [];
-let isFirstPrepended = true;
+let state;
 
-textConsole.addEventListener('keydown', (e) => {
-  if (e.key === "Enter") {
-    executeInput(e.target.value);
-    return prependPastInput();
-  }
-})
+// TODO: implement shift + enter newline
+function bindKeyEvents() {
+  textConsole.addEventListener('keydown', (e) => {
+    if (e.key === "Enter") {
+      executeInput(e.target.value);
+      return prependPastInput();
+    }
+  })
+
+  textConsole.addEventListener('keyup', () => {
+    Object.keys(state.keys).map(key => state.keys[key] = false);
+  })
+}
 
 function executeInput(input) {
   textConsole.value = '';
-  inputs.push(input);
+  state.inputs.push(input);
 
   try {
     // TODO: capability to do 'var, let, const' declarations
@@ -29,17 +35,30 @@ function executeInput(input) {
 
 function prependPastInput() {
   let prepended = document.createElement('div');
-  let text = document.createTextNode(inputs[inputs.length - 1]);
-  let parentNodesLength = inputContainer.childNodes.length
+  let text = document.createTextNode(state.inputs[state.inputs.length - 1]);
+  let childNodesLength = inputContainer.childNodes.length;
 
   prepended.appendChild(text);
 
-  if (isFirstPrepended) {
+  if (state.isFirstPrepended) {
     inputContainer.insertBefore(prepended, inputContainer.childNodes[0]);
-    return isFirstPrepended = false;
+    return state.isFirstPrepended = false;
   } else { 
     inputContainer.insertBefore(prepended, inputContainer.childNodes[
-      parentNodesLength - 2
+      childNodesLength - 2
     ]);
   }
 }
+
+function init() {
+  return state = {
+    inputs: [],
+    isFirstPrepended: true,
+    keys: {
+      shift: false,
+      enter: false
+    }
+  }
+}
+
+window.onload = init;
