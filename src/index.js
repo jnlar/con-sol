@@ -33,7 +33,7 @@ function bindKeyEvents() {
     if (e.key === 'Enter' && e.target.value !== '') {
       executeInput(e.target.value);
       if (state.clearingPastInputs) {
-        return;
+        return handleClear();
       } else {
         handleClear();
         prependPastInput();
