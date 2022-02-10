@@ -19,9 +19,9 @@ const state = {
 function bindKeyEvents() {
   textConsole.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowUp') {
-      handleTraversal('back')
+      return traverseBack();
     } else if (e.key === 'ArrowDown') {
-      handleTraversal('forward')
+      return traverseForward();
     }
 
     if (e.key == 'l' && e.ctrlKey) {
@@ -52,30 +52,45 @@ function setInputToHistory(position) {
   return textConsole.value = state.inputs[state.inputs.length - position];
 }
 
+function doCallback(callback) {
+  return typeof callback === 'function' ? callback() : null;
+}
+
+function canTraverseBack(callback) {
+  if (state.inputs.length) {
+    if (traverse.position !== state.inputs.length) {
+      return doCallback(callback);
+    }
+  }
+}
+
+function canTraverseForward(callback) {
+  if (traverse.position !== 1) {
+    return doCallback(callback);
+  }
+}
+
 function traverseBack() {
   if (state.firstTraversal) {
-    state.firstTraversal = false;
-    return setInputToHistory(1);
+    canTraverseBack(() => {
+      state.firstTraversal = false;
+      return setInputToHistory(1);
+    })
   } else {
-    traverse.executeCommand(new AddCommand(1));
-    let position = traverse.position;
-    return setInputToHistory(position);
+    canTraverseBack(() => {
+      traverse.executeCommand(new AddCommand(1));
+      let position = traverse.position;
+      return setInputToHistory(position);
+    })
   }
-
 }
 
 function traverseForward() {
-  traverse.undo(); 
-  let position = traverse.position;
-  return setInputToHistory(position);
-}
-
-function handleTraversal(direction) {
-  if (direction === 'back') {
-    return traverseBack();
-  } else if (direction === 'forward') {
-    return traverseForward();
-  }
+  canTraverseForward(() => {
+    traverse.undo(); 
+    let position = traverse.position;
+    return setInputToHistory(position);
+  })
 }
 
 function cursorToTop() {
@@ -135,3 +150,13 @@ function prependPastInput() {
 }
 
 window.onload = bindKeyEvents;
+
+export {
+  canTraverseBack,
+  canTraverseForward,
+  createNewChild,
+  traverseForward,
+  traverseBack,
+  pushInput,
+  clearInputs
+};
