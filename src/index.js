@@ -1,50 +1,81 @@
+import { Traverse, AddCommand } from "./command";
+
+const traverse = new Traverse();
 const textConsole = document.getElementById('console');
 const inputContainer = document.getElementById('input-container');
 const output = document.getElementById('output');
+const errorColor = 'text-red-600';
 
-let state;
+const pushInput = input => state.inputs.push(input);
+const clearInputs = () => state.inputs = [];
 
-// TODO: 
-// - implement shift + enter newline
+const state = {
+  inputs: [],
+  firstTraversal: true,
+  isFirstPrepended: true,
+  clearingPastInputs: false,
+}
+
 function bindKeyEvents() {
   textConsole.addEventListener('keydown', (e) => {
-    if (e.key == 'ArrowUp') {
-      handleHistory();
+    if (e.key === 'ArrowUp') {
+      handleTraversal('back')
+    } else if (e.key === 'ArrowDown') {
+      handleTraversal('forward')
     }
 
     if (e.key == 'l' && e.ctrlKey) {
       e.preventDefault();
       cursorToTop();
+      clearInputs();
     }
 
     if (e.key === 'Enter' && e.target.value !== '') {
       executeInput(e.target.value);
-
       if (state.clearingPastInputs) {
-        return state.clearingPastInputs = false;
+        return;
+      } else {
+        handleClear();
+        prependPastInput();
       }
-
-      prependPastInput();
-      state.resetHistory();
     }
   })
 }
 
-function setInputToHistory() {
-  return textConsole.value = state.inputs[state.historyPos()];
+function handleClear() {
+  if (state.clearingPastInputs) {
+    return state.clearingPastInputs = false;
+  }
 }
 
-function handleHistory() {
-  if (state.inputs[state.historyPos()] !== undefined) {
-    if (!state.hasTraversedHistory) {
-      state.hasTraversedHistory = true;
-      setInputToHistory();
-      return state.traverseCount++
-    }
+function setInputToHistory(position) {
+  return textConsole.value = state.inputs[state.inputs.length - position];
+}
 
-    setInputToHistory();
-    state.traverseCount++;
-  } 
+function traverseBack() {
+  if (state.firstTraversal) {
+    state.firstTraversal = false;
+    return setInputToHistory(1);
+  } else {
+    traverse.executeCommand(new AddCommand(1));
+    let position = traverse.position;
+    return setInputToHistory(position);
+  }
+
+}
+
+function traverseForward() {
+  traverse.undo(); 
+  let position = traverse.position;
+  return setInputToHistory(position);
+}
+
+function handleTraversal(direction) {
+  if (direction === 'back') {
+    return traverseBack();
+  } else if (direction === 'forward') {
+    return traverseForward();
+  }
 }
 
 function cursorToTop() {
@@ -57,23 +88,23 @@ function executeInput(input) {
   textConsole.value = '';
 
   if (input === 'clear') {
-    state.inputs = [];
+    clearInputs();
     state.clearingPastInputs = true;
     return cursorToTop();
   }
 
-  state.inputs.push(input);
+  pushInput(input);
 
-  if (output.classList.contains(state.errorColor)) {
-    output.classList.remove(state.errorColor);
+  if (output.classList.contains(errorColor)) {
+    output.classList.remove(errorColor);
   }
 
   try {
-    // TODO: implement capability to do 'var, let, const' declarations,
+    // FIXME: implement capability to do 'var, let, const' declarations,
     let fn = new Function('return ' + input)();
     return output.innerHTML = fn;
   } catch(e) {
-    output.classList.add(state.errorColor);
+    output.classList.add(errorColor);
     output.innerHTML = e;
     throw new Error(e);
   }
@@ -103,24 +134,4 @@ function prependPastInput() {
   }
 }
 
-function init() {
-  bindKeyEvents();
-
-  return state = {
-    inputs: [],
-    hasTraversedHistory: false,
-    historyPos: () => {
-      return state.inputs.length - state.traverseCount; 
-    },
-    resetHistory: () => {
-      state.hasTraversedHistory = false;
-      state.traverseCount = 1;
-    },
-    traverseCount: 1,
-    isFirstPrepended: true,
-    clearingPastInputs: false,
-    errorColor: 'text-red-600'
-  }
-}
-
-window.onload = init;
+window.onload = bindKeyEvents;
