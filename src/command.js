@@ -1,4 +1,4 @@
-export class Traverse {
+class Traverse {
   constructor() {
     this.position = 1;
     this.history = [];
@@ -15,7 +15,7 @@ export class Traverse {
   }
 }
 
-export class AddCommand {
+class AddCommand {
   constructor(newPosition) {
     this.newPosition = newPosition;
   }
@@ -27,4 +27,9 @@ export class AddCommand {
   undo(currentValue) {
     return currentValue - this.newPosition;
   }
+}
+
+module.exports = {
+  Traverse,
+  AddCommand
 }

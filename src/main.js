@@ -1,4 +1,4 @@
-import { Traverse, AddCommand } from "./command";
+const { Traverse, AddCommand } = require("./command");
 
 const traverse = new Traverse();
 const textConsole = document.getElementById('console');
@@ -151,12 +151,9 @@ function prependPastInput() {
 
 window.onload = bindKeyEvents;
 
-export {
+console.log(doCallback)
+
+module.exports = {
   canTraverseBack,
-  canTraverseForward,
-  createNewChild,
-  traverseForward,
-  traverseBack,
-  pushInput,
-  clearInputs
+  doCallback,
 };
