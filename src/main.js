@@ -159,7 +159,7 @@ function prependPastInput() {
     inputContainer.insertBefore(toPrepend, inputContainer.childNodes[0]);
     return state.isFirstPrepended = false;
   } else { 
-    inputContainer.insertBefore(toPrepend, inputContainer.childNodes[
+    return inputContainer.insertBefore(toPrepend, inputContainer.childNodes[
       childNodesLength - 2
     ]);
   }
@@ -175,6 +175,7 @@ module.exports = {
   doCallback,
   handleClear,
   nodes,
+  prependPastInput,
   pushInput,
   removeNodes,
   setInputToHistory,
