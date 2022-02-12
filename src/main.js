@@ -1,8 +1,5 @@
 const { Traverse, AddCommand } = require("./command");
 
-const traverse = new Traverse();
-const errorColor = 'text-red-600';
-
 const nodes = {
   textConsole: document.getElementById('console'),
   inputContainer: document.getElementById('input-container'),
@@ -15,33 +12,46 @@ const state = {
   clearingPastInputs: false,
 };
 
+const traverse = new Traverse();
+const errorColor = 'text-red-600';
+
 const pushInput = (array, input) => array.push(input);
 const clearInputs = () => state.inputs = [];
 
 function bindKeyEvents() {
-  nodes.textConsole.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowUp') {
-      return traverseBack();
-    } else if (e.key === 'ArrowDown') {
-      return traverseForward();
-    }
+  nodes.textConsole.addEventListener('keydown', (e) => traverseListener(e));
+  nodes.textConsole.addEventListener('keydown', (e) => clearListener(e));
+  nodes.textConsole.addEventListener('keydown', (e) => executeListener(e));
+}
 
-    if (e.key == 'l' && e.ctrlKey) {
-      e.preventDefault();
-      removeNodes('.past-input');
-      clearInputs();
-    }
+function clearListener(e) {
+  if (e.key === 'l' && e.ctrlKey) {
+    e.preventDefault();
+    removeNodes('.past-input');
+    clearInputs();
+  }
+}
 
-    if (e.key === 'Enter' && e.target.value !== '') {
-      executeInput(e.target.value);
-      if (state.clearingPastInputs) {
-        return handleClear(state);
-      } else {
-        handleClear(state);
-        prependPastInput();
-      }
+function executeListener(e) {
+  if (e.key === 'Enter' && e.target.value !== '') {
+    executeInput(e.target.value);
+    if (state.clearingPastInputs) {
+      return handleClear(state);
+    } else {
+      handleClear(state);
+      prependPastInput();
     }
-  })
+  }
+}
+
+function traverseListener(e) {
+  if (e.key === 'ArrowUp') {
+    console.log('up')
+    return traverseBack();
+  } else if (e.key === 'ArrowDown') {
+    console.log('down')
+    return traverseForward();
+  }
 }
 
 function handleClear(state) {
@@ -51,10 +61,9 @@ function handleClear(state) {
 }
 
 function setInputToHistory(position) {
-  let value = nodes.textConsole.value;
-  if (value) {
-    return value = state.inputs[state.inputs.length - position];
-  }
+  return nodes.textConsole.value = state.inputs[
+    state.inputs.length - position
+  ];
 }
 
 function doCallback(callback) {
@@ -168,17 +177,21 @@ function prependPastInput() {
 window.onload = bindKeyEvents;
 
 module.exports = {
+  nodes,
+  state,
+  traverse,
+  bindKeyEvents,
   canTraverseBack,
   canTraverseForward,
   clearInputs,
+  clearListener,
   createNewChild,
   doCallback,
+  executeListener,
   handleClear,
-  nodes,
   prependPastInput,
   pushInput,
   removeNodes,
   setInputToHistory,
-  state,
-  traverse,
+  traverseListener,
 };

@@ -3,12 +3,13 @@
  */
 
 const { 
-  createNewChild, 
   nodes,
+  state,
+  bindKeyEvents,
+  createNewChild, 
   prependPastInput,
   removeNodes,
   setInputToHistory,
-  state,
 } = require('../main');
 
 afterAll(() => {
