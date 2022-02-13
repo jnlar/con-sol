@@ -3,6 +3,7 @@
   "source": "src/index.html",
   "devDependencies": {
     "jest": "^27.5.1",
+    "jest-junit": "^13.0.0",
     "parcel": "^2.2.1",
     "tailwindcss": "^3.0.18"
   },
@@ -10,6 +11,6 @@
     "dev": "npx tailwindcss -i ./src/main.css -o ./dist/main.css --watch",
     "start": "parcel",
     "build": "parcel build",
-    "test": "jest --coverage"
+    "test": "jest"
   }
 }
