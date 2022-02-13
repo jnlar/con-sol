@@ -5,6 +5,7 @@
 const { 
   nodes,
   state,
+  traverse,
   bindKeyEvents,
   createNewChild, 
   prependPastInput,
@@ -12,58 +13,124 @@ const {
   setInputToHistory,
 } = require('../main');
 
-afterAll(() => {
+afterEach(() => {
   document.body.innerHTML = '';
   state.inputs = [];
 })
 
-test('test createNewChild should return a HTMLDivElement', () => {
-  expect(createNewChild().toString()).toBe("[object HTMLDivElement]");
+describe('EventListeners', () => {
+  const arrowUp = new KeyboardEvent('keydown', { key: 'ArrowUp' });
+  const arrowDown = new KeyboardEvent('keydown', { key: 'ArrowDown' });
+  const enter = new KeyboardEvent('keydown', { key: 'Enter' });
+
+  beforeEach(() => {
+    document.body.innerHTML = `
+      <div id="input-container">
+        <input id="console" value="2" />
+        <div id="output">
+        </div>
+      </div>
+      `;
+    nodes.inputContainer = document.getElementById('input-container');
+    nodes.textConsole = document.getElementById('console');
+    nodes.output = document.getElementById('output');
+    bindKeyEvents();
+  })
+
+  test('traverseListener 01 (Traversing back)', () => {
+    state.inputs = ['hey', 'friend'];
+
+    expect(state.firstTraversal).toBe(true);
+    nodes.textConsole.dispatchEvent(arrowUp);
+    expect(nodes.textConsole.value).toBe('friend');
+    expect(state.firstTraversal).toBe(false);
+  })
+
+  test('traverseListener 02 (Traversing forward)', () => {
+    state.inputs = ['hey', 'friend'];
+
+    expect(state.firstTraversal).toBe(false);
+    nodes.textConsole.dispatchEvent(arrowUp);
+    traverse.position = 2;
+    nodes.textConsole.dispatchEvent(arrowDown);
+    expect(nodes.textConsole.value).toBe('friend');
+  })
+
+  test('executeListner 01 (press Enter with valid JavaScript command as input value)', () => {
+    nodes.textConsole.dispatchEvent(enter);
+    expect(nodes.inputContainer.childNodes[0].innerHTML).toBe('2')
+    expect(output.innerHTML).toBe('2');
+    expect(nodes.textConsole.value).toBe('');
+    expect(state.inputs[state.inputs.length - 1]).toBe('2');
+  })
+
+  test('executeListener 02 (press Enter with "clear" as input)', () => {
+    // We need create a past input before we can clear 
+    nodes.textConsole.dispatchEvent(enter);
+    expect(document.querySelectorAll('.past-input').length).toBe(1);
+    nodes.textConsole.value = 'clear';
+    nodes.textConsole.dispatchEvent(enter);
+    expect(document.querySelectorAll('.past-input').length).toBe(0);
+  })
 })
 
-test('removeNodes should remove all found elements', () => {
-  document.body.innerHTML = '<div class="past-input"></div><div class="past-input"></div>'
-  const result = removeNodes('.past-input');
-
-  expect(result).toBe(true);
-  expect(document.querySelectorAll('.past-input').length).toBe(0);
+describe('createNewChild', () => {
+  test('createNewChild should return a HTMLDivElement', () => {
+    expect(createNewChild().toString()).toBe("[object HTMLDivElement]");
+  })
 })
 
-test('removeNodes should throw an error if no elements are found', () => {
-  expect(() => removeNodes('foo')).toThrow();
+describe('removeNodes', () => {
+  test('removeNodes should remove all found elements', () => {
+    document.body.innerHTML = '<div class="past-input"></div><div class="past-input"></div>'
+    const result = removeNodes('.past-input');
+
+    expect(result).toBe(true);
+    expect(document.querySelectorAll('.past-input').length).toBe(0);
+  })
 })
 
-test('setInputToHistory should set the console input to the given index in the state.inputs array', () => {
-  document.body.innerHTML = '<input id="console" value="foo"/>';
-  nodes.textConsole = document.getElementById('console')
-  state.inputs = ['hello', 'world'];
-
-  expect(setInputToHistory(1)).toBe('world');
+describe('removeNodes', () => {
+  test('removeNodes should throw an error if no elements are found', () => {
+    expect(() => removeNodes('foo')).toThrow();
+  })
 })
 
-test('prependPastInput should set isFirstPrepended to false if the past input is the first past input to be inserted into input-container', () => {
-  document.body.innerHTML = '<div id="input-container"></div>';
-  nodes.inputContainer = document.getElementById('input-container');
-  state.inputs = ['bar'];
-  state.isFirstPrepended = true;
+describe('setInpuToHistory', () => {
+  test('setInputToHistory should set the console input to the given index in the state.inputs array', () => {
+    document.body.innerHTML = '<input id="console" value="foo"/>';
+    nodes.textConsole = document.getElementById('console')
+    state.inputs = ['hello', 'world'];
 
-  expect(prependPastInput()).toBe(false);
-  expect(nodes.inputContainer.childNodes[0].innerHTML).toBe('bar');
+    expect(setInputToHistory(1)).toBe('world');
+  })
 })
 
-test('prependPastInput should prepend the past input above the console input, and below every other past input so long as their are > 1 past inputs', () => {
-  document.body.innerHTML = 
-  `<div id="input-container">
-    <div class="past-input">hey</div>
-    <div class="past-input">hi</div>
-    <input id="console" value="foo" />
-  </div>`;
-  nodes.inputContainer = document.getElementById('input-container');
-  state.isFirstPrepended = false;
-  state.inputs = ['yo'];
+describe('prependPastInput', () => {
+  test('prependPastInput should set isFirstPrepended to false if the past input is the first past input to be inserted into input-container', () => {
+    document.body.innerHTML = '<div id="input-container"></div>';
+    nodes.inputContainer = document.getElementById('input-container');
+    state.inputs = ['bar'];
+    state.isFirstPrepended = true;
 
-  prependPastInput();
-  expect(nodes.inputContainer.childNodes[
-    nodes.inputContainer.childNodes.length - 3
-  ].innerHTML).toBe('yo');
+    expect(prependPastInput()).toBe(false);
+    expect(nodes.inputContainer.childNodes[0].innerHTML).toBe('bar');
+  })
+
+  test('prependPastInput should prepend the past input above the console input, and below every other past input so long as their are > 1 past inputs', () => {
+    document.body.innerHTML = 
+    `<div id="input-container">
+      <div class="past-input">hey</div>
+      <div class="past-input">hi</div>
+      <input id="console" value="foo" />
+    </div>`;
+    nodes.inputContainer = document.getElementById('input-container');
+    state.isFirstPrepended = false;
+    state.inputs = ['yo'];
+
+    prependPastInput();
+    expect(nodes.inputContainer.childNodes[
+      nodes.inputContainer.childNodes.length - 3
+    ].innerHTML).toBe('yo');
+  })
 })

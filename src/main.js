@@ -46,10 +46,8 @@ function executeListener(e) {
 
 function traverseListener(e) {
   if (e.key === 'ArrowUp') {
-    console.log('up')
     return traverseBack();
   } else if (e.key === 'ArrowDown') {
-    console.log('down')
     return traverseForward();
   }
 }
@@ -77,7 +75,7 @@ function canTraverseBack(callback) {
     }
   }
 
-  throw new Error(`Past inputs = ${state.inputs.length}, cannot traverse back`);
+  throw new Error(`Cannot traverse back: Already at earliest point in input history`);
 }
 
 function canTraverseForward(callback) {

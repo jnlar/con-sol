@@ -43,7 +43,7 @@ function testDoCallBack() {
   test('doCallback should execute a callback function', () => {
     expect(doCallback(() => 1 + 2)).toBe(3);
   })
-  test('doCallback should return return null if the first arguement isn\'t a function', () => {
+  test('doCallback should return null if the first arguement isn\'t a function', () => {
     expect(doCallback(3)).toBe(null);
     expect(doCallback('hey')).toBe(null);
   })
@@ -68,7 +68,6 @@ function testCommands() {
 testCommands();
 
 function testCanTraverseBack() {
-  // FIXME: we aren't testing the first nested if statement
   test('canTraverseBack returns a callback', () => {
     state.inputs = ['foo', 'bar'];
     const mockFn = jest.fn(() => {
