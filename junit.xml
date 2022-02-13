@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="27" failures="0" errors="0" time="0.651">
-  <testsuite name="EventListeners" errors="0" failures="0" skipped="0" timestamp="2022-02-13T04:31:12" time="0.21" tests="15">
+<testsuites name="jest tests" tests="27" failures="0" errors="0" time="0.649">
+  <testsuite name="EventListeners" errors="0" failures="0" skipped="0" timestamp="2022-02-13T04:33:03" time="0.211" tests="15">
     <testcase classname="EventListeners traverseListener on ArrowUp should set the console input to the last input executed, and set state.firstTraversal to false" name="EventListeners traverseListener on ArrowUp should set the console input to the last input executed, and set state.firstTraversal to false" time="0.007">
     </testcase>
     <testcase classname="EventListeners traverseListener on ArrowDown should set the console input to the previously traversed input if possible" name="EventListeners traverseListener on ArrowDown should set the console input to the previously traversed input if possible" time="0.002">
@@ -17,7 +17,7 @@
     </testcase>
     <testcase classname="executeInput Should throw an error if the input value is invalid JavaScript" name="executeInput Should throw an error if the input value is invalid JavaScript" time="0.016">
     </testcase>
-    <testcase classname="executeInput Should remove the errorColor class from the output div if the input just executed was valid JavaScript" name="executeInput Should remove the errorColor class from the output div if the input just executed was valid JavaScript" time="0.001">
+    <testcase classname="executeInput Should remove the errorColor class from the output div if the input just executed was valid JavaScript" name="executeInput Should remove the errorColor class from the output div if the input just executed was valid JavaScript" time="0.002">
     </testcase>
     <testcase classname="createNewChild Should return a HTMLDivElement" name="createNewChild Should return a HTMLDivElement" time="0">
     </testcase>
@@ -27,31 +27,31 @@
     </testcase>
     <testcase classname="setInpuToHistory Should set the console input to the given index in the state.inputs array" name="setInpuToHistory Should set the console input to the given index in the state.inputs array" time="0.001">
     </testcase>
-    <testcase classname="prependPastInput Should set isFirstPrepended to false if the past input is the first past input to be inserted into input-container" name="prependPastInput Should set isFirstPrepended to false if the past input is the first past input to be inserted into input-container" time="0.001">
+    <testcase classname="prependPastInput Should set isFirstPrepended to false if the past input is the first past input to be inserted into input-container" name="prependPastInput Should set isFirstPrepended to false if the past input is the first past input to be inserted into input-container" time="0">
     </testcase>
-    <testcase classname="prependPastInput Should prepend the past input above the console input, and below every other past input so long as their are &gt; 1 past inputs" name="prependPastInput Should prepend the past input above the console input, and below every other past input so long as their are &gt; 1 past inputs" time="0.002">
+    <testcase classname="prependPastInput Should prepend the past input above the console input, and below every other past input so long as their are &gt; 1 past inputs" name="prependPastInput Should prepend the past input above the console input, and below every other past input so long as their are &gt; 1 past inputs" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="pushInput" errors="0" failures="0" skipped="0" timestamp="2022-02-13T04:31:12" time="0.121" tests="12">
+  <testsuite name="pushInput" errors="0" failures="0" skipped="0" timestamp="2022-02-13T04:33:03" time="0.121" tests="12">
     <testcase classname="pushInput Should push one element onto an array" name="pushInput Should push one element onto an array" time="0.002">
     </testcase>
-    <testcase classname="handleClear Should set state.clearingPastInputs to false" name="handleClear Should set state.clearingPastInputs to false" time="0">
+    <testcase classname="handleClear Should set state.clearingPastInputs to false" name="handleClear Should set state.clearingPastInputs to false" time="0.001">
     </testcase>
     <testcase classname="clearInputs Should return an empty array" name="clearInputs Should return an empty array" time="0">
     </testcase>
     <testcase classname="doCallback Should execute a callback function" name="doCallback Should execute a callback function" time="0">
     </testcase>
-    <testcase classname="doCallback Should return null if the first arguement isn&apos;t a function" name="doCallback Should return null if the first arguement isn&apos;t a function" time="0">
+    <testcase classname="doCallback Should return null if the first arguement isn&apos;t a function" name="doCallback Should return null if the first arguement isn&apos;t a function" time="0.003">
     </testcase>
-    <testcase classname="Commands traverse.executeCommand with AddCommand instantiation as parameter should add to traverse.position" name="Commands traverse.executeCommand with AddCommand instantiation as parameter should add to traverse.position" time="0">
+    <testcase classname="Commands traverse.executeCommand with AddCommand instantiation as parameter should add to traverse.position" name="Commands traverse.executeCommand with AddCommand instantiation as parameter should add to traverse.position" time="0.001">
     </testcase>
-    <testcase classname="Commands traverse.undo should undo the last command" name="Commands traverse.undo should undo the last command" time="0.003">
+    <testcase classname="Commands traverse.undo should undo the last command" name="Commands traverse.undo should undo the last command" time="0">
     </testcase>
     <testcase classname="canTraverseBack Should return a callback" name="canTraverseBack Should return a callback" time="0">
     </testcase>
-    <testcase classname="canTraverseBack Should throw an error if inputs array is empty" name="canTraverseBack Should throw an error if inputs array is empty" time="0.01">
+    <testcase classname="canTraverseBack Should throw an error if inputs array is empty" name="canTraverseBack Should throw an error if inputs array is empty" time="0.012">
     </testcase>
-    <testcase classname="canTraverseBack Should throw an error if traverse.position is equal to state.inputs.length" name="canTraverseBack Should throw an error if traverse.position is equal to state.inputs.length" time="0.001">
+    <testcase classname="canTraverseBack Should throw an error if traverse.position is equal to state.inputs.length" name="canTraverseBack Should throw an error if traverse.position is equal to state.inputs.length" time="0">
     </testcase>
     <testcase classname="canTraverseForward Should throw an error if traverse position is 1" name="canTraverseForward Should throw an error if traverse position is 1" time="0.001">
     </testcase>

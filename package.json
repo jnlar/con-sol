@@ -11,6 +11,6 @@
     "dev": "npx tailwindcss -i ./src/main.css -o ./dist/main.css --watch",
     "start": "parcel",
     "build": "parcel build",
-    "test": "jest"
+    "tests": "jest"
   }
 }
