@@ -11,6 +11,10 @@
     "dev": "npx tailwindcss -i ./src/main.css -o ./dist/main.css --watch",
     "start": "parcel",
     "build": "parcel build",
-    "tests": "jest"
+    "tests": "jest --ci --reporters=default --reporters=jest-junit"
+  },
+  "jest-junit": {
+    "outputDirectory": "reports",
+    "outputName": "jest-junit.xml"
   }
 }
