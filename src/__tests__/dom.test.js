@@ -8,6 +8,7 @@ const {
   traverse,
   bindKeyEvents,
   createNewChild, 
+  executeInput,
   prependPastInput,
   removeNodes,
   setInputToHistory,
@@ -19,6 +20,11 @@ afterEach(() => {
 })
 
 describe('EventListeners', () => {
+  /*
+   * bindKeyEvents handles all of our events in the console app,
+   * triggering an event by dispatching a particular keypress will test the 
+   * functions binded to our keyboard events.
+   */
   const arrowUp = new KeyboardEvent('keydown', { key: 'ArrowUp' });
   const arrowDown = new KeyboardEvent('keydown', { key: 'ArrowDown' });
   const enter = new KeyboardEvent('keydown', { key: 'Enter' });
@@ -71,6 +77,26 @@ describe('EventListeners', () => {
     nodes.textConsole.value = 'clear';
     nodes.textConsole.dispatchEvent(enter);
     expect(document.querySelectorAll('.past-input').length).toBe(0);
+  })
+})
+
+describe('executeOutput', () => {
+  const errorColor = 'text-red-600'
+
+  beforeEach(() => {
+    document.body.innerHTML = `<input id="console" value="" /><div id="output" class="${errorColor}"></div>`;
+    nodes.output = document.getElementById('output');
+  })
+
+  test('executeOutput should throw an error if the input value is an invalid JavaScript command', () => {
+    expect(() => {executeInput('hi')}).toThrow();
+    expect(nodes.output.classList.contains(errorColor)).toBe(true);
+  })
+
+  test('executeOutput should remove the errorColor class from the output div if the command just run was successful', () => {
+    expect(nodes.output.classList.contains(errorColor)).toBe(true);
+    executeInput('x = (a, b) => a + b');
+    expect(nodes.output.classList.contains(errorColor)).toBe(false);
   })
 })
 

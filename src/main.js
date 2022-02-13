@@ -185,6 +185,7 @@ module.exports = {
   clearListener,
   createNewChild,
   doCallback,
+  executeInput,
   executeListener,
   handleClear,
   prependPastInput,
