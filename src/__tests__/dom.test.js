@@ -88,12 +88,12 @@ describe('executeOutput', () => {
     nodes.output = document.getElementById('output');
   })
 
-  test('executeOutput should throw an error if the input value is an invalid JavaScript command', () => {
+  test('executeOutput should throw an error if the input value is invalid JavaScript', () => {
     expect(() => {executeInput('hi')}).toThrow();
     expect(nodes.output.classList.contains(errorColor)).toBe(true);
   })
 
-  test('executeOutput should remove the errorColor class from the output div if the command just run was successful', () => {
+  test('executeOutput should remove the errorColor class from the output div if the input just executed was valid JavaScript', () => {
     expect(nodes.output.classList.contains(errorColor)).toBe(true);
     executeInput('x = (a, b) => a + b');
     expect(nodes.output.classList.contains(errorColor)).toBe(false);
