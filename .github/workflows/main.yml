@@ -1,3 +1,4 @@
+name: JEST Tests
 on:
   pull_request:
   push:
