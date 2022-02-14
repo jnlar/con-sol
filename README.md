@@ -1,5 +1,5 @@
 
-# con-sol [![JEST Tests](https://github.com/jnlar/con-sol/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/jnlar/con-sol/actions/workflows/main.yml)
+# con-sol [![JEST Tests](https://github.com/jnlar/con-sol/actions/workflows/main.yml/badge.svg)](https://github.com/jnlar/con-sol/actions/workflows/main.yml)
 
 JavaScript console app, for learning purposes. 📘
 
