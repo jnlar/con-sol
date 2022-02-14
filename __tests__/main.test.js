@@ -11,8 +11,8 @@ const {
   pushInput,
   state,
   traverse,
-} = require('../main');
-const { Traverse, AddCommand } = require("../command");
+} = require('../public/src/main');
+const { Traverse, AddCommand } = require("../public/src/command");
 
 afterEach(() => {
   traverse.position = 1;

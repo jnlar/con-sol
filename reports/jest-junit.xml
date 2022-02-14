@@ -1,29 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="27" failures="0" errors="0" time="0.802">
-  <testsuite name="DOM tests" errors="0" failures="0" skipped="0" timestamp="2022-02-13T05:05:49" time="0.31" tests="15">
-    <testcase classname="DOM tests EventListeners traverseListener on ArrowUp should set the console input to the last input executed, and set state.firstTraversal to false" name="DOM tests EventListeners traverseListener on ArrowUp should set the console input to the last input executed, and set state.firstTraversal to false" time="0.008">
+<testsuites name="jest tests" tests="27" failures="3" errors="0" time="0.812">
+  <testsuite name="DOM tests" errors="0" failures="3" skipped="0" timestamp="2022-02-14T13:22:47" time="0.35" tests="15">
+    <testcase classname="DOM tests EventListeners traverseListener on ArrowUp should set the console input to the last input executed, and set state.firstTraversal to false" name="DOM tests EventListeners traverseListener on ArrowUp should set the console input to the last input executed, and set state.firstTraversal to false" time="0.007">
     </testcase>
-    <testcase classname="DOM tests EventListeners traverseListener on ArrowDown should set the console input to the previously traversed input if possible" name="DOM tests EventListeners traverseListener on ArrowDown should set the console input to the previously traversed input if possible" time="0.001">
+    <testcase classname="DOM tests EventListeners traverseListener on ArrowDown should set the console input to the previously traversed input if possible" name="DOM tests EventListeners traverseListener on ArrowDown should set the console input to the previously traversed input if possible" time="0.002">
     </testcase>
-    <testcase classname="DOM tests EventListeners executeListener the prepended past input div should have the executed input as it&apos;s innerHTML" name="DOM tests EventListeners executeListener the prepended past input div should have the executed input as it&apos;s innerHTML" time="0.004">
+    <testcase classname="DOM tests EventListeners executeListener the prepended past input div should have the executed input as it&apos;s innerHTML" name="DOM tests EventListeners executeListener the prepended past input div should have the executed input as it&apos;s innerHTML" time="0.015">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+- Expected  - 1
++ Received  + 2
+
+- 2
++
++           
+    at Object.&lt;anonymous&gt; (/home/user/03/repos/con-sol/__tests__/dom.test.js:74:34)
+    at Promise.then.completed (/home/user/03/repos/con-sol/node_modules/jest-circus/build/utils.js:391:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/home/user/03/repos/con-sol/node_modules/jest-circus/build/utils.js:316:10)
+    at _callCircusTest (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:218:40)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at _runTest (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:155:3)
+    at _runTestsForDescribeBlock (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:66:9)
+    at _runTestsForDescribeBlock (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:60:9)
+    at _runTestsForDescribeBlock (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:60:9)
+    at _runTestsForDescribeBlock (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:60:9)
+    at run (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:25:3)
+    at runAndTransformResultsToJestFormat (/home/user/03/repos/con-sol/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:170:21)
+    at jestAdapter (/home/user/03/repos/con-sol/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:82:19)
+    at runTestInternal (/home/user/03/repos/con-sol/node_modules/jest-runner/build/runTest.js:389:16)
+    at runTest (/home/user/03/repos/con-sol/node_modules/jest-runner/build/runTest.js:475:34)</failure>
     </testcase>
-    <testcase classname="DOM tests EventListeners executeListener the output div should have the expected output if the input was valid JavaScript" name="DOM tests EventListeners executeListener the output div should have the expected output if the input was valid JavaScript" time="0.002">
+    <testcase classname="DOM tests EventListeners executeListener the output div should have the expected output if the input was valid JavaScript" name="DOM tests EventListeners executeListener the output div should have the expected output if the input was valid JavaScript" time="0.003">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+- Expected  - 1
++ Received  + 2
+
+- 3
++
++           
+    at Object.&lt;anonymous&gt; (/home/user/03/repos/con-sol/__tests__/dom.test.js:81:34)
+    at Promise.then.completed (/home/user/03/repos/con-sol/node_modules/jest-circus/build/utils.js:391:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/home/user/03/repos/con-sol/node_modules/jest-circus/build/utils.js:316:10)
+    at _callCircusTest (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:218:40)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at _runTest (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:155:3)
+    at _runTestsForDescribeBlock (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:66:9)
+    at _runTestsForDescribeBlock (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:60:9)
+    at _runTestsForDescribeBlock (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:60:9)
+    at _runTestsForDescribeBlock (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:60:9)
+    at run (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:25:3)
+    at runAndTransformResultsToJestFormat (/home/user/03/repos/con-sol/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:170:21)
+    at jestAdapter (/home/user/03/repos/con-sol/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:82:19)
+    at runTestInternal (/home/user/03/repos/con-sol/node_modules/jest-runner/build/runTest.js:389:16)
+    at runTest (/home/user/03/repos/con-sol/node_modules/jest-runner/build/runTest.js:475:34)</failure>
     </testcase>
-    <testcase classname="DOM tests EventListeners executeListener pressing Enter should clear the console if the input was valid JavaScript" name="DOM tests EventListeners executeListener pressing Enter should clear the console if the input was valid JavaScript" time="0.001">
+    <testcase classname="DOM tests EventListeners executeListener pressing Enter should clear the console if the input was valid JavaScript" name="DOM tests EventListeners executeListener pressing Enter should clear the console if the input was valid JavaScript" time="0.003">
     </testcase>
-    <testcase classname="DOM tests EventListeners executeListener pressing Enter with &quot;clear&quot; as the console input should remove all past inputs from the consoles display" name="DOM tests EventListeners executeListener pressing Enter with &quot;clear&quot; as the console input should remove all past inputs from the consoles display" time="0.006">
+    <testcase classname="DOM tests EventListeners executeListener pressing Enter with &quot;clear&quot; as the console input should remove all past inputs from the consoles display" name="DOM tests EventListeners executeListener pressing Enter with &quot;clear&quot; as the console input should remove all past inputs from the consoles display" time="0.004">
     </testcase>
-    <testcase classname="DOM tests EventListeners clearlistener pressing crtl and l in combination should clear the past inputs displayed in the console" name="DOM tests EventListeners clearlistener pressing crtl and l in combination should clear the past inputs displayed in the console" time="0.002">
+    <testcase classname="DOM tests EventListeners clearlistener pressing crtl and l in combination should clear the past inputs displayed in the console" name="DOM tests EventListeners clearlistener pressing crtl and l in combination should clear the past inputs displayed in the console" time="0.003">
     </testcase>
-    <testcase classname="DOM tests executeInput Should throw an error if the input value is invalid JavaScript" name="DOM tests executeInput Should throw an error if the input value is invalid JavaScript" time="0.019">
+    <testcase classname="DOM tests executeInput Should throw an error if the input value is invalid JavaScript" name="DOM tests executeInput Should throw an error if the input value is invalid JavaScript" time="0.002">
+      <failure>Error: expect(received).toThrow()
+
+Received function did not throw
+    at Object.&lt;anonymous&gt; (/home/user/03/repos/con-sol/__tests__/dom.test.js:127:42)
+    at Promise.then.completed (/home/user/03/repos/con-sol/node_modules/jest-circus/build/utils.js:391:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/home/user/03/repos/con-sol/node_modules/jest-circus/build/utils.js:316:10)
+    at _callCircusTest (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:218:40)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at _runTest (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:155:3)
+    at _runTestsForDescribeBlock (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:66:9)
+    at _runTestsForDescribeBlock (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:60:9)
+    at _runTestsForDescribeBlock (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:60:9)
+    at run (/home/user/03/repos/con-sol/node_modules/jest-circus/build/run.js:25:3)
+    at runAndTransformResultsToJestFormat (/home/user/03/repos/con-sol/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:170:21)
+    at jestAdapter (/home/user/03/repos/con-sol/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:82:19)
+    at runTestInternal (/home/user/03/repos/con-sol/node_modules/jest-runner/build/runTest.js:389:16)
+    at runTest (/home/user/03/repos/con-sol/node_modules/jest-runner/build/runTest.js:475:34)</failure>
     </testcase>
-    <testcase classname="DOM tests executeInput Should remove the errorColor class from the output div if the input just executed was valid JavaScript" name="DOM tests executeInput Should remove the errorColor class from the output div if the input just executed was valid JavaScript" time="0.001">
+    <testcase classname="DOM tests executeInput Should remove the errorColor class from the output div if the input just executed was valid JavaScript" name="DOM tests executeInput Should remove the errorColor class from the output div if the input just executed was valid JavaScript" time="0.002">
     </testcase>
     <testcase classname="DOM tests createNewChild Should return a HTMLDivElement" name="DOM tests createNewChild Should return a HTMLDivElement" time="0">
     </testcase>
     <testcase classname="DOM tests removeNodes Should remove all found elements" name="DOM tests removeNodes Should remove all found elements" time="0.001">
     </testcase>
-    <testcase classname="DOM tests removeNodes Should throw an error if no elements are found" name="DOM tests removeNodes Should throw an error if no elements are found" time="0.001">
+    <testcase classname="DOM tests removeNodes Should throw an error if no elements are found" name="DOM tests removeNodes Should throw an error if no elements are found" time="0.006">
     </testcase>
     <testcase classname="DOM tests setInpuToHistory Should set the console input to the given index in the state.inputs array" name="DOM tests setInpuToHistory Should set the console input to the given index in the state.inputs array" time="0.001">
     </testcase>
@@ -32,7 +98,7 @@
     <testcase classname="DOM tests prependPastInput Should prepend the past input above the console input, and below every other past input so long as their are &gt; 1 past inputs" name="DOM tests prependPastInput Should prepend the past input above the console input, and below every other past input so long as their are &gt; 1 past inputs" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="Main" errors="0" failures="0" skipped="0" timestamp="2022-02-13T05:05:49" time="0.158" tests="12">
+  <testsuite name="Main" errors="0" failures="0" skipped="0" timestamp="2022-02-14T13:22:48" time="0.138" tests="12">
     <testcase classname="Main pushInput Should push one element onto an array" name="Main pushInput Should push one element onto an array" time="0.002">
     </testcase>
     <testcase classname="Main handleClear Should set state.clearingPastInputs to false" name="Main handleClear Should set state.clearingPastInputs to false" time="0">
@@ -49,7 +115,7 @@
     </testcase>
     <testcase classname="Main canTraverseBack Should return a callback" name="Main canTraverseBack Should return a callback" time="0.001">
     </testcase>
-    <testcase classname="Main canTraverseBack Should throw an error if inputs array is empty" name="Main canTraverseBack Should throw an error if inputs array is empty" time="0.011">
+    <testcase classname="Main canTraverseBack Should throw an error if inputs array is empty" name="Main canTraverseBack Should throw an error if inputs array is empty" time="0.012">
     </testcase>
     <testcase classname="Main canTraverseBack Should throw an error if traverse.position is equal to state.inputs.length" name="Main canTraverseBack Should throw an error if traverse.position is equal to state.inputs.length" time="0.001">
     </testcase>

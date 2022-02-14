@@ -1,4 +1,5 @@
 const { Traverse, AddCommand } = require("./command");
+const axios = require('axios');
 
 const nodes = {
   textConsole: document.getElementById('console'),
@@ -120,7 +121,7 @@ function removeNodes(selector) {
   throw new Error(`HTML nodes with selector '${selector}' not found`);
 }
 
-function executeInput(input) {
+async function executeInput(input) {
   nodes.textConsole.value = '';
   let output = nodes.output;
 
@@ -136,15 +137,16 @@ function executeInput(input) {
     output.classList.remove(errorColor);
   }
 
-  try {
-    // FIXME: implement capability to do 'var, let, const' declarations,
-    let fn = new Function('return ' + input)();
-    return output.innerHTML = fn;
-  } catch(e) {
-    output.classList.add(errorColor);
-    output.innerHTML = e;
-    throw new Error(e);
-  }
+  await axios.post(`http://localhost:3030/api`, {
+    run: `${input}`
+  })
+    .then((res)  => {
+      return output.innerHTML = res.data.result;
+    }).catch((err) => {
+      // FIXME: return the actual JS VM error
+      output.innerHTML = err;
+      throw new Error(err);
+    })
 }
 
 function createNewChild() {

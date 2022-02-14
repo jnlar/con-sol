@@ -11,7 +11,7 @@ const {
   prependPastInput,
   removeNodes,
   setInputToHistory,
-} = require('../main');
+} = require('../public/src/main');
 
 afterEach(() => {
   document.body.innerHTML = '';
