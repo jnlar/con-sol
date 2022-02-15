@@ -15,10 +15,10 @@
     "tailwindcss": "^3.0.18"
   },
   "scripts": {
-    "server": "nodemon ./app.js",
+    "server": "nodemon ./src/app.js",
     "client": "parcel",
     "client-build": "parcel build",
-    "dev": "npx tailwindcss -i ./src/main.css -o ./dist/main.css --watch",
+    "dev": "npx tailwindcss -i ./public/main.css -o ./dist/main.css --watch",
     "tests": "jest --ci --reporters=default --reporters=jest-junit"
   },
   "jest-junit": {

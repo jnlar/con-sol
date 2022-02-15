@@ -14,7 +14,7 @@ const state = {
 };
 
 const traverse = new Traverse();
-const errorColor = 'text-red-600';
+const errorColor = 'text-red-500';
 
 const pushInput = (array, input) => array.push(input);
 const clearInputs = () => state.inputs = [];
@@ -141,10 +141,14 @@ async function executeInput(input) {
     run: `${input}`
   })
     .then((res)  => {
-      return output.innerHTML = res.data.result;
+      if (res.data.error) {
+        output.innerHTML = res.data.error;
+        output.classList.add(errorColor);
+      } else {
+        output.innerHTML = res.data.result;
+      }
     }).catch((err) => {
-      // FIXME: return the actual JS VM error
-      output.innerHTML = err;
+      console.log(err);
       throw new Error(err);
     })
 }
