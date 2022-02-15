@@ -15,12 +15,9 @@ app.use((req, res, next) => {
   next();
 })
 
+
 // TODO:
-// - return an indication that an error happened, so we can style 
-//   the output color for the console.
-// 1. middleware that runs the vm.run(), send json to next
-//    with different shape if it's an error
-// 2. endpoint that 
+// - Reset sandbox on page reload? this should be done on pageload in the front-end
 app.post('/api', run);
 
 app.listen(PORT, () => {

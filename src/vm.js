@@ -11,8 +11,6 @@ const vm = new VM({
   }
 });
 
-// TODO:
-// - Reset sandbox on page reload? this should be done on pageload in the front-end
 const run = (req, res) => {
   try {
     return res.send({result: vm.run(req.body.run, 'vm.js')});
