@@ -18,6 +18,7 @@ const errorColor = 'text-red-500';
 
 const pushInput = (array, input) => array.push(input);
 const clearInputs = () => state.inputs = [];
+const scrollToBottom = (node) => node.scrollTop = node.scrollHeight;
 
 function bindKeyEvents() {
   nodes.textConsole.addEventListener('keydown', (e) => traverseListener(e));
@@ -147,6 +148,8 @@ async function executeInput(input) {
       } else {
         output.innerHTML = res.data.result;
       }
+
+      return scrollToBottom(nodes.inputContainer);
     }).catch((err) => {
       console.log(err);
       throw new Error(err);
