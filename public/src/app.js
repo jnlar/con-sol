@@ -1,5 +1,6 @@
 const { Traverse, AddCommand } = require("./command");
 const axios = require('axios');
+axios.defaults.withCredentials = true;
 
 const nodes = {
   textConsole: document.getElementById('console'),
@@ -151,7 +152,6 @@ async function executeInput(input) {
 
       return scrollToBottom(nodes.inputContainer);
     }).catch((err) => {
-      console.log(err);
       throw new Error(err);
     })
 }
@@ -181,7 +181,18 @@ function prependPastInput() {
   }
 }
 
-window.onload = bindKeyEvents;
+async function resetVM() {
+  await axios.post('http://localhost:3030/api', {
+    reset: 'true',
+  }).catch(err => {
+    console.log(err);
+  });
+}
+
+window.onload = () => {
+  bindKeyEvents();
+  resetVM();
+}
 
 module.exports = {
   nodes,
