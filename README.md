@@ -1,5 +1,5 @@
 
-# con-sol [![JEST Tests](https://github.com/jnlar/con-sol/actions/workflows/main.yml/badge.svg)](https://github.com/jnlar/con-sol/actions/workflows/main.yml)
+# con-sol
 
 JavaScript console app, for learning purposes. 📘
 
@@ -7,7 +7,10 @@ JavaScript console app, for learning purposes. 📘
 
 ```shell
 # start up parcel server
-npm run start
+npm run client
+
+# start up node server
+npm run server
 
 # start up tailwind watch compiler
 npm run dev
