@@ -1,9 +1,11 @@
+require('dotenv').config();
 const {reset, run} = require('./vm');
 const uuid = require('./util/uuid');
 const session = require('express-session');
 const express = require('express');
+const dbConfig = require('./db/config/db.config');
+const main = require('./db/db');
 
-require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3030;
 const sessionName = uuid();
@@ -43,7 +45,7 @@ postRouter.use((req, res, next) => {
   })
   next();
 })
-postRouter.post('/', (req, res, next) => {
+postRouter.post('/', main(dbConfig.url), (req, res, next) => {
   console.log(req.session.cookie, req.session.id);
   next();
 }, run);

@@ -3,11 +3,21 @@ version: "3.8"
 services:
   node:
     image: node:16
+    restart: always
     container_name: appserver
     command: "npm run server"
+    env_file: ./.env
     volumes:
       - .:/var/www/app
     working_dir: /var/www/app
+    environment:
+      - DB_HOST=$DB_HOST
+      - DB_USER=$DB_USER
+      - DB_PASSWORD=$DB_PASS
+      - DB_NAME=$DB_NAME
+      - DB_PORT=$DB_PORT
+    depends_on:
+      - mongo
   nginx:
     restart: always
     image: nginx:latest
@@ -18,3 +28,15 @@ services:
       - "8080:80"
     depends_on:
       - node
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    restart: always
+    env_file: ./.env
+    ports:
+      - $DB_PORT:$DB_PORT
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $DB_USER
+      MONGO_INITDB_ROOT_PASSWORD: $DB_PASS
+    volumes:
+      - ./mongo_data:/data/mongo/db
