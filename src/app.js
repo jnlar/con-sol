@@ -8,7 +8,10 @@ const app = express();
 const PORT = process.env.PORT || 3030;
 const sessionName = uuid();
 
-app.use(session({
+const postRouter = express.Router();
+const getRouter = express.Router();
+
+const sessionConfig = {
   resave: false,
   saveUninitialized: true,
   genid: () => uuid(),
@@ -17,24 +20,37 @@ app.use(session({
     maxAge: 100000,
   },
   name: sessionName,
-}))
+}
 
-app.use(express.json());
+getRouter.use((req, res, next) => {
+  res.header({
+    'Access-Control-Allow-Credentials': true,
+    'Access-Control-Request-Method': 'GET',
+    'Access-Control-Allow-Origin': `${process.env.CLIENT}`,
+    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+  })
+  next();
+})
+getRouter.get('/', reset);
 
-app.use((req, res, next) => {
+postRouter.use(express.json());
+postRouter.use((req, res, next) => {
   res.header({
   'Access-Control-Allow-Credentials': true,
   'Access-Control-Request-Method': 'POST',
-  "Access-Control-Allow-Headers": 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+  'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
   'Access-Control-Allow-Origin': `${process.env.CLIENT}`,
   })
   next();
 })
-
-app.post('/api', reset, (req, res, next) => {
+postRouter.post('/', (req, res, next) => {
   console.log(req.session.cookie, req.session.id);
   next();
 }, run);
+
+app.use(session(sessionConfig));
+app.use('/reset', getRouter);
+app.use('/api', postRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);

@@ -18,13 +18,10 @@ const create = () => {
 
 // TODO: reset VM (for when we actually have a store for each sessions window object)
 const reset = (req, res, next) => {
-  if (req.body.reset === 'true') {
-    console.log(new Date().toISOString() + ': Resetting VM for session ' + `[${req.session.id}]`);
-    // for now, we're just creating a new VM for every page reload
-    vm = create();
-    return res.status(200);
-  }
-  next();
+  console.log(new Date().toISOString() + ': Resetting VM for session ' + `[${req.session.id}]`);
+  // for now, we're just creating a new VM for every page reload
+  vm = create();
+  return res.status(200);
 }
 
 const run = (req, res) => {

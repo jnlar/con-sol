@@ -139,7 +139,7 @@ async function executeInput(input) {
     output.classList.remove(errorColor);
   }
 
-  await axios.post(`http://localhost:3030/api`, {
+  await axios.post(`http://localhost:8080/api`, {
     run: `${input}`
   })
     .then((res)  => {
@@ -182,9 +182,11 @@ function prependPastInput() {
 }
 
 async function resetVM() {
-  await axios.post('http://localhost:3030/api', {
-    reset: 'true',
-  }).catch(err => {
+  await axios.get('http://localhost:8080/reset')
+  .then(res => {
+    console.log(res)
+  })
+  .catch(err => {
     console.log(err);
   });
 }
