@@ -181,20 +181,7 @@ function prependPastInput() {
   }
 }
 
-async function resetVM() {
-  await axios.get('http://localhost:8080/reset')
-  .then(res => {
-    console.log(res)
-  })
-  .catch(err => {
-    console.log(err);
-  });
-}
-
-window.onload = () => {
-  bindKeyEvents();
-  resetVM();
-}
+window.onload = bindKeyEvents;
 
 module.exports = {
   nodes,

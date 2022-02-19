@@ -1,20 +1,43 @@
 const {MongoClient} = require('mongodb');
 
-function main(url) {
+async function hasSession(url, id) {
   const client = new MongoClient(url);
+  try {
+    await client.connect();
 
-  return async (req, res, next) => {
-    try {
-      await client.connect();
+    const db = client.db('windowObjects');
+    const session = db.collection('session');
 
-      await client.db('admin').command({ping: 1});
-      console.log('Connected to database...');
-    } finally {
-      await client.close();
-    }
+    const res = await session.findOne({session: id}, {
+      projection: {_id: 0, session: 1}
+    })
 
-    next();
+    return res === null ? false : true;
+  } catch {
+    console.error;
+  } finally {
+    await client.close();
   }
 }
 
-module.exports = main;
+async function insert(url, vm) {
+  const client =  new MongoClient(url);
+
+  try {
+    await client.connect();
+
+    const db = client.db('windowObjects');
+    const session = db.collection('session');
+
+    return await session.insertOne(vm);
+  } catch {
+    console.error;
+  } finally {
+    await client.close();
+  }
+}
+
+module.exports = {
+  insert,
+  hasSession,
+};
