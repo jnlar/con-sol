@@ -11,17 +11,6 @@ function doCallback(callback) {
   return typeof callback === 'function' ? callback() : null;
 }
 
-function removeNodes(selector) {
-  if (document.querySelectorAll(selector).length) {
-    document.querySelectorAll(selector).forEach(el => {
-      el.remove();
-    });
-    return true;
-  }
-
-  throw new Error(`HTML nodes with selector '${selector}' not found`);
-}
-
 export default function App() {
   const nodes = {
     textConsole: document.getElementById('console'),
@@ -33,13 +22,11 @@ export default function App() {
   const [output, setOutput] = useState('');
   const [error, setError] = useState(false);
   const [firstTraversal, setFirstTraversal] = useState(true);
-  const [isFirstPrepended, setIsFirstPrepended] = useState(true);
   const [clearingPastInputs, setClearingPastInputs] = useState(false);
 
   function clearListener(e) {
     if (e.key === 'l' && e.ctrlKey) {
       e.preventDefault();
-      removeNodes('.past-input');
       setInputs([]);
     }
   }
@@ -105,31 +92,6 @@ export default function App() {
     ]);
   }
 
-  function createNewChild() {
-    let newChild = document.createElement('div');
-    let lastInput = document.createTextNode(inputs[inputs.length - 1]);
-
-    newChild.appendChild(lastInput);
-    newChild.classList.add('past-input');
-
-    return newChild;
-  }
-
-  function prependPastInput() {
-    let inputContainer = nodes.inputContainer;
-    let toPrepend = createNewChild();
-    let childNodesLength = inputContainer.childNodes.length;
-
-    if (isFirstPrepended) {
-      inputContainer.insertBefore(toPrepend, inputContainer.childNodes[0]);
-      return setIsFirstPrepended(false);
-    } else { 
-      return inputContainer.insertBefore(toPrepend, inputContainer.childNodes[
-        childNodesLength - 1
-      ]);
-    }
-  }
-
   function executeListener(e) {
     if (e.key === 'Enter' && e.target.value !== '') {
       executeInput();
@@ -137,7 +99,6 @@ export default function App() {
         return handleClear();
       } else {
         handleClear();
-        prependPastInput();
       }
     }
   }
@@ -177,8 +138,14 @@ export default function App() {
       <div className="flex justify-center h-[800px] p-10 text-sm">
         <div className="w-8/12 flex shadow-md">
           <div id="input-container" className="bg-neutral-900 w-2/4 p-2 rounded-l-md h-full overflow-auto scroll">
+            {inputs.map(input => {
+              return (
+                <div key={input} className="past-input">
+                  {input}
+                </div>
+              )})}
             <span className="w-full">
-              <span className="text-green-600 w-[5%]">&gt;</span>
+              <span className="text-green-600 w-[5%] pr-1">&gt;</span>
               <input 
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
