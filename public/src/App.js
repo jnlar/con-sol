@@ -21,6 +21,7 @@ export default function App() {
   const inputContainer = document.getElementById('input-container');
   const [input, setInput] = useState('');
   const [inputs, setInputs] = useState([]);
+  const [inputsHistory, setInputsHistory] = useState([]);
   const [output, setOutput] = useState('');
   const [error, setError] = useState(false);
   const [firstTraversal, setFirstTraversal] = useState(true);
@@ -47,8 +48,8 @@ export default function App() {
   }
 
   function canTraverseBack(callback) {
-    if (inputs.length) {
-      if (traverse.position !== inputs.length) {
+    if (inputsHistory.length) {
+      if (traverse.position !== inputsHistory.length) {
         return doCallback(callback);
       }
     }
@@ -88,8 +89,8 @@ export default function App() {
   }
 
   function setInputToHistory(position) {
-    return setInput(inputs[
-      inputs.length - position
+    return setInput(inputsHistory[
+      inputsHistory.length - position
     ]);
   }
 
@@ -100,6 +101,7 @@ export default function App() {
       return setInputs([]);
     } else {
       setInputs([...inputs, input])
+      setInputsHistory([...inputs, ...inputsHistory, input])
     }
 
     await axios.post(`http://localhost:8080/api`, {
