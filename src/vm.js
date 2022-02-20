@@ -1,9 +1,7 @@
 const {VM} = require('vm2');
 const {insert, hasSession} = require('./db/db');
 const dbConfig = require ('./db/config/db.config')
-const vms = [];
-// REMOVEME
-let vm;
+const vms = new Map();
 
 function create() {
   return new VM({
@@ -19,30 +17,22 @@ function create() {
   })
 }
 
-// TODO: implement as getter so we can get the current 
-// vm that's binded to the session
-function getVm(vms) {}
-
-// REMOVEME
-vm = create();
+function execute(currentSession, vms, req) {
+  return vms.get(currentSession).vm.run(req.body.run, 'vm.js');
+}
 
 async function run(req, res) {
-  let execute; 
+  let currentSession = req.session.id.replace(/\-/gm, '');
 
   try {
     let hasSessionBool = await hasSession(dbConfig.url, req.session.id);
 
     if (!hasSessionBool) {
       insert(dbConfig.url, {session: req.session.id});
-      vms.push({session: req.session.id, vm: create()})
-      // FIXME: this isn't going to work as multiple clients
-      // can fire off a new session, but we're still going to get the first vm
-      execute = vms[0].vm.run(req.body.run, 'vm.js');
-      return res.send({result: execute});
+      vms.set(currentSession, {vm: create()});
+      return res.send({result: execute(currentSession, vms, req)});
     } else {
-      // FIXME: use a getter to refer to the vm assosciated with the current session
-      execute = vm.run(req.body.run, 'vm.js');
-      return res.send({result: execute});
+      return res.send({result: execute(currentSession, vms, req)});
     }
 
   } catch(err) {
