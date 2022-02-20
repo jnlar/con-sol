@@ -1,7 +1,10 @@
 const {MongoClient} = require('mongodb');
 
+const con = url => new MongoClient(url);
+
 async function hasSession(url, id) {
-  const client = new MongoClient(url);
+  const client = con(url);
+
   try {
     await client.connect();
 
@@ -20,8 +23,8 @@ async function hasSession(url, id) {
   }
 }
 
-async function insert(url, vm) {
-  const client =  new MongoClient(url);
+async function insert(url, currentSession) {
+  const client = con(url);
 
   try {
     await client.connect();
@@ -29,7 +32,7 @@ async function insert(url, vm) {
     const db = client.db('windowObjects');
     const session = db.collection('session');
 
-    return await session.insertOne(vm);
+    return await session.insertOne(currentSession);
   } catch {
     console.error;
   } finally {

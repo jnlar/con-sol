@@ -3,24 +3,20 @@ const {run} = require('./vm');
 const uuid = require('./util/uuid');
 const session = require('express-session');
 const express = require('express');
+const compression = require('compression');
 
 const app = express();
 const PORT = process.env.PORT || 3030;
-const sessionName = uuid();
 
 const postRouter = express.Router();
 
-// FIXME: refreshing the page won't initialise a new session until an execution is run
-//        so it's currently possible to access variables from the last sessions global object  
 const sessionConfig = {
   resave: false,
   saveUninitialized: true,
   genid: () => uuid(),
   secret: process.env.SECRET,
-  cookie: {
-    maxAge: 100000,
-  },
-  name: sessionName,
+  cookie: {},
+  name: uuid(),
 }
 
 postRouter.use(express.json());
@@ -35,6 +31,7 @@ postRouter.use((req, res, next) => {
 })
 postRouter.post('/', run);
 
+app.use(compression());
 app.use(session(sessionConfig));
 app.use('/api', postRouter);
 

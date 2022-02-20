@@ -34,11 +34,10 @@ async function run(req, res) {
     } else {
       return res.send({result: execute(currentSession, vms, req)});
     }
-
   } catch(err) {
     console.log(err.stack)
     return res.send({error: err.toString()});
-  }
+  } 
 }
 
 module.exports = {
