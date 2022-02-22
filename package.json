@@ -26,6 +26,9 @@
     "outputName": "jest-junit.xml"
   },
   "dependencies": {
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.4.2",
+    "@mui/material": "^5.4.2",
     "axios": "^0.26.0",
     "compression": "^1.7.4",
     "dotenv": "^16.0.0",

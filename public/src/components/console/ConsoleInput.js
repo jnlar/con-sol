@@ -1,4 +1,5 @@
 import React from 'react';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 export default function ConsoleInput(props) {
   const {
@@ -11,7 +12,9 @@ export default function ConsoleInput(props) {
 
   return (
     <span className="w-full">
-      <span className="text-green-600 w-[5%] pr-1">&gt;</span>
+      <span className="text-neutral-700 w-[5%] text-sm font-bold pr-1">
+        <ArrowForwardIosIcon sx={{fontSize: 11}}/>
+      </span>
       <input 
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => {
@@ -19,13 +22,12 @@ export default function ConsoleInput(props) {
           clearListener(e);
           executeListener(e);
         }}
-        className="bg-neutral-900 focus:outline-none caret-green-600 w-[90%]"
-        id="console" 
+        className="bg-neutral-900 focus:outline-none caret-neutral-700 w-[90%]"
         value={input} 
         type="text"
         autoComplete="off"
         autoCorrect="off"
-        spellCheck="off" />
+        spellCheck={false} />
     </span>
   )
 }

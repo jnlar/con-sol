@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
 import ConsoleInput from "./components/console/ConsoleInput";
+import ConsoleInputContainer from "./components/console/containers/ConsoleInputContainer";
+import ConsoleHeader from "./components/console/ConsoleHeader";
 import ConsoleOutput from "./components/console/ConsoleOutput";
 import ConsoleOuterContainer from "./components/console/containers/ConsoleOuterContainer";
-import ConsoleInputContainer from "./components/console/containers/ConsoleInputContainer";
-import PastInputs from "./components/console/PastInputs";
 import { Traverse, AddCommand } from "./util/command";
 
 const traverse = new Traverse();
@@ -20,16 +20,14 @@ function doCallback(callback) {
 export default function App() {
   const inputContainer = document.getElementById('input-container');
   const [input, setInput] = useState('');
-  const [inputs, setInputs] = useState([]);
+  const [consol, setConsol] = useState([]);
   const [inputsHistory, setInputsHistory] = useState([]);
-  const [output, setOutput] = useState('');
-  const [error, setError] = useState(false);
   const [firstTraversal, setFirstTraversal] = useState(true);
 
   function clearListener(e) {
     if (e.key === 'l' && e.ctrlKey) {
       e.preventDefault();
-      setInputs([]);
+      setConsol([]);
     }
   }
 
@@ -98,23 +96,24 @@ export default function App() {
     setInput('');
 
     if (input === 'clear') {
-      return setInputs([]);
-    } else {
-      setInputs([...inputs, input])
-      setInputsHistory([...inputs, ...inputsHistory, input])
-    }
+      return setConsol([]);
+    }  
 
     await axios.post(`http://localhost:8080/api`, {
       run: `${input}`
     })
-      .then((res)  => {
-        if (res.data.error) {
-          setError(true);
-          setOutput(res.data.error)
-        } else {
-          setError(false);
-          setOutput(res.data.result);
-        }
+      .then((res) => {
+        let didError;
+        res.data.error ? didError = true : didError = false;
+
+        setConsol(prevState => [
+          ...prevState,
+          {
+            input: input,
+            output: res.data.result || res.data.error,
+            error: didError,
+          }
+        ]);
 
         return scrollToBottom(inputContainer);
       }).catch((err) => {
@@ -124,10 +123,9 @@ export default function App() {
 
   return (
     <>
-      <h1 className="text-center text-lg pt-10">Con-Sol</h1>
       <ConsoleOuterContainer>
         <ConsoleInputContainer>
-          <PastInputs inputs={inputs} />
+          <ConsoleOutput consol={consol} />
           <ConsoleInput 
             setInput={setInput}
             traverseListener={traverseListener}
@@ -136,7 +134,6 @@ export default function App() {
             input={input}
           />
         </ConsoleInputContainer>
-        <ConsoleOutput error={error} output={output} />
       </ConsoleOuterContainer>
     </>
   )

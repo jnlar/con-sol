@@ -1,10 +1,14 @@
 import React from 'react';
+import ConsoleHeader from '../ConsoleHeader';
 
 export default function ConsoleOuterContainer(props) {
   return (
-    <div className="flex justify-center h-[800px] p-10 text-sm">
-      <div className="w-8/12 flex shadow-md">
-        {props.children}
+    <div className="flex flex-col pt-8">
+      <div className="m-auto w-8/12 p-10 text-sm">
+        <ConsoleHeader />
+        <div className="flex border-[0.15rem] rounded-b-md border-darkBlue h-[800px] shadow-md">
+          {props.children}
+        </div>
       </div>
     </div>
   )
