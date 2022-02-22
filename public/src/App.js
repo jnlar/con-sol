@@ -22,6 +22,7 @@ export default function App() {
   const [input, setInput] = useState('');
   const [consol, setConsol] = useState([]);
   const [inputsHistory, setInputsHistory] = useState([]);
+  const [error, setError] = useState(false);
   const [firstTraversal, setFirstTraversal] = useState(true);
 
   function clearListener(e) {
@@ -103,15 +104,12 @@ export default function App() {
       run: `${input}`
     })
       .then((res) => {
-        let didError;
-        res.data.error ? didError = true : didError = false;
-
         setConsol(prevState => [
           ...prevState,
           {
             input: input,
             output: res.data.result || res.data.error,
-            error: didError,
+            error: Boolean(res.data.error),
           }
         ]);
 

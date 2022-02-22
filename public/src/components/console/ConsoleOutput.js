@@ -3,15 +3,15 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
-function Output(props) {
+function Output({error, isInput, children}) {
   let PrependIcon;
-  const style = "text-sm font-bold text-neutral-700 mr-1";
+  const style = "font-bold text-neutral-700 mr-1";
 
-  if (!props.error) {
-    if (!props.isInput) {
-      PrependIcon = <ArrowForwardIosIcon className={style} sx={{fontSize: 11}}/>;
-    } else {
+  if (!error) {
+    if (!isInput) {
       PrependIcon = <ArrowBackIosIcon className={style} sx={{fontSize: 11}}/>;
+    } else {
+      PrependIcon = <ArrowForwardIosIcon className={style} sx={{fontSize: 11}}/>;
     }
   } else {
     PrependIcon = <CancelIcon className={`${style} text-errorRed`} sx={{fontSize: 11}} />; 
@@ -20,12 +20,13 @@ function Output(props) {
   return (
     <div className="flex items-baseline">
       {PrependIcon}
-      {props.children}
+      {children}
     </div>
   )
 }
 
 export default function ConsoleOutput({consol}) {
+  console.log(consol.output)
   return (
     <>
       {consol.map((consol, index) => {
@@ -38,15 +39,26 @@ export default function ConsoleOutput({consol}) {
               consol.output ? 
                 consol.error ? 
                   <Output error={true}>
+                    {/*
+                      TODO:
+                      - error stack trace?
+                    */}
                     <p className="text-errorRed">{consol.output}</p>
                   </Output>
                 : 
                   <Output>
-                    <p>{consol.output}</p> 
+                    {/*
+                      TODO:
+                      - functions return undefined if we just try to reference it in the console,
+                        e.g a function def such as fn = () => 1 should return exactly that if we input 'fn' into the console
+                      FIXME: 
+                      - render objects without stringifying?
+                    */}
+                    <p>{JSON.stringify(consol.output)}</p> 
                   </Output>
               : 
                 <Output>
-                  <p className="italic">undefined</p>
+                  <p>undefined</p>
                 </Output>
             }
           </div>

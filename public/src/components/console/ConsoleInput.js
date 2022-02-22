@@ -12,7 +12,7 @@ export default function ConsoleInput(props) {
 
   return (
     <span className="w-full">
-      <span className="text-neutral-700 w-[5%] text-sm font-bold pr-1">
+      <span className="text-neutral-500 w-[5%] font-bold pr-1">
         <ArrowForwardIosIcon sx={{fontSize: 11}}/>
       </span>
       <input 
