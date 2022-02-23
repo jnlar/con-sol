@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
 import ConsoleInput from "./components/console/ConsoleInput";
 import ConsoleInputContainer from "./components/console/containers/ConsoleInputContainer";
-import ConsoleHeader from "./components/console/ConsoleHeader";
 import ConsoleOutput from "./components/console/ConsoleOutput";
 import ConsoleOuterContainer from "./components/console/containers/ConsoleOuterContainer";
 import { Traverse, AddCommand } from "./util/command";
@@ -22,7 +21,6 @@ export default function App() {
   const [input, setInput] = useState('');
   const [consol, setConsol] = useState([]);
   const [inputsHistory, setInputsHistory] = useState([]);
-  const [error, setError] = useState(false);
   const [firstTraversal, setFirstTraversal] = useState(true);
 
   function clearListener(e) {
@@ -100,23 +98,24 @@ export default function App() {
       return setConsol([]);
     }  
 
-    await axios.post(`http://localhost:8080/api`, {
-      run: `${input}`
-    })
-      .then((res) => {
-        setConsol(prevState => [
-          ...prevState,
-          {
-            input: input,
-            output: res.data.result || res.data.error,
-            error: Boolean(res.data.error),
-          }
-        ]);
-
-        return scrollToBottom(inputContainer);
-      }).catch((err) => {
-        throw new Error(err);
+    try {
+      let res = await axios.post(`http://localhost:8080/api`, {
+        run: `${input}`,
       })
+
+      setConsol(prevState => [
+        ...prevState,
+        {
+          input: input,
+          output: res.data.result || res.data.error,
+          error: Boolean(res.data.error),
+        }
+      ]);
+
+      return scrollToBottom(inputContainer);
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 
   return (

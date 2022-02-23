@@ -1,5 +1,5 @@
 import React from 'react';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 export default function ConsoleInput(props) {
   const {
@@ -12,8 +12,8 @@ export default function ConsoleInput(props) {
 
   return (
     <span className="w-full">
-      <span className="text-neutral-500 w-[5%] font-bold pr-1">
-        <ArrowForwardIosIcon sx={{fontSize: 11}}/>
+      <span className="text-blue-500 w-[5%] font-bold pr-1">
+        <ChevronRightIcon sx={{fontSize: 20}}/>
       </span>
       <input 
         onChange={(e) => setInput(e.target.value)}

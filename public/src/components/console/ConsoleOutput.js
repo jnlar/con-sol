@@ -1,37 +1,46 @@
 import React from "react";
 import CancelIcon from '@mui/icons-material/Cancel';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
-function Output({error, isInput, children}) {
-  let PrependIcon;
-  const style = "font-bold text-neutral-700 mr-1";
-
-  if (!error) {
-    if (!isInput) {
-      PrependIcon = <ArrowBackIosIcon className={style} sx={{fontSize: 11}}/>;
-    } else {
-      PrependIcon = <ArrowForwardIosIcon className={style} sx={{fontSize: 11}}/>;
-    }
-  } else {
-    PrependIcon = <CancelIcon className={`${style} text-errorRed`} sx={{fontSize: 11}} />; 
-  }
-
+function OutputContainer({children}) {
   return (
-    <div className="flex items-baseline">
-      {PrependIcon}
+    <div className="border-b border-neutral-800 past">
       {children}
     </div>
   )
 }
 
+function Output({error, isInput, children}) {
+  let PrependIcon;
+  const style = "font-bold mr-1";
+
+  if (!error) {
+    if (!isInput) {
+      PrependIcon = <KeyboardArrowLeftIcon className={`${style} text-neutral-500`} sx={{fontSize: 20}}/>;
+    } else {
+      PrependIcon = <ChevronRightIcon className={`${style} text-neutral-400`} sx={{fontSize: 20}}/>;
+    }
+  } else {
+    PrependIcon = <CancelIcon className={`${style} ml-1 text-errorRed`} sx={{fontSize: 11}} />; 
+  }
+
+  return (
+    <div className="flex items-center">
+      {PrependIcon}
+      <div className="pt-[0.2rem]">
+        {children}
+      </div>
+    </div>
+  )
+}
+
 export default function ConsoleOutput({consol}) {
-  console.log(consol.output)
   return (
     <>
       {consol.map((consol, index) => {
         return (
-          <div key={index} className="past">
+          <OutputContainer key={index}>
             <Output isInput={true}>
               <p>{consol.input}</p>
             </Output>
@@ -43,7 +52,7 @@ export default function ConsoleOutput({consol}) {
                       TODO:
                       - error stack trace?
                     */}
-                    <p className="text-errorRed">{consol.output}</p>
+                    <p className="pl-1 text-errorRed">{consol.output}</p>
                   </Output>
                 : 
                   <Output>
@@ -61,7 +70,7 @@ export default function ConsoleOutput({consol}) {
                   <p>undefined</p>
                 </Output>
             }
-          </div>
+          </OutputContainer>
         )
       })}
     </>
