@@ -1,5 +1,5 @@
 const {VM} = require('vm2');
-const {insert, hasSession} = require('./db/db');
+const {hasSession} = require('./db/db');
 const dbConfig = require ('./db/config/db.config')
 const vms = new Map();
 
@@ -23,12 +23,15 @@ function execute(currentSession, vms, req) {
 
 async function run(req, res) {
   let currentSession = req.session.id.replace(/\-/gm, '');
-
+  console.log(req.session.id);
+  console.log(req.body.run);
+  console.log(vms);
+  
   try {
     let hasSessionBool = await hasSession(dbConfig.url, req.session.id);
+    console.log(hasSessionBool);
 
     if (!hasSessionBool) {
-      insert(dbConfig.url, {session: req.session.id});
       vms.set(currentSession, {vm: create()});
       return res.send({result: execute(currentSession, vms, req)});
     } else {

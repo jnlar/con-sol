@@ -1,19 +1,19 @@
 const {MongoClient} = require('mongodb');
-
-const con = url => new MongoClient(url);
+require('dotenv').config();
 
 async function hasSession(url, id) {
-  const client = con(url);
+  const client = new MongoClient(url);
 
   try {
     await client.connect();
 
-    const db = client.db('windowObjects');
-    const session = db.collection('session');
+    const db = client.db(process.env.DB_NAME);
+    const session = db.collection(process.env.DB_COLLECTION);
 
-    const res = await session.findOne({session: id}, {
-      projection: {_id: 0, session: 1}
+    const res = await session.findOne({_id: id}, {
+      projection: {_id: 1, session: 0, expires: 0}
     })
+    console.log(res)
 
     return res === null ? false : true;
   } catch {
@@ -23,24 +23,6 @@ async function hasSession(url, id) {
   }
 }
 
-async function insert(url, currentSession) {
-  const client = con(url);
-
-  try {
-    await client.connect();
-
-    const db = client.db('windowObjects');
-    const session = db.collection('session');
-
-    return await session.insertOne(currentSession);
-  } catch {
-    console.error;
-  } finally {
-    await client.close();
-  }
-}
-
 module.exports = {
-  insert,
   hasSession,
 };
