@@ -23,13 +23,14 @@ function execute(currentSession, vms, req) {
 
 async function run(req, res) {
   let currentSession = req.session.id.replace(/\-/gm, '');
-  console.log(req.session.id);
-  console.log(req.body.run);
-  console.log(vms);
   
   try {
     let hasSessionBool = await hasSession(dbConfig.url, req.session.id);
-    console.log(hasSessionBool);
+
+    // FIXME: quick hack for now so we aren't constantly writing new sessions to the store
+    req.session.lastExecution = {
+      date: new Date().toISOString(),
+    };
 
     if (!hasSessionBool) {
       vms.set(currentSession, {vm: create()});
