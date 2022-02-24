@@ -1,35 +1,35 @@
 class Traverse {
-  constructor() {
-    this.position = 1;
-    this.history = [];
-  }
+	constructor() {
+		this.position = 1;
+		this.history = [];
+	}
 
-  executeCommand(command) {
-    this.position = command.execute(this.position);
-    this.history.push(command);
-  }
+	executeCommand(command) {
+		this.position = command.execute(this.position);
+		this.history.push(command);
+	}
 
-  undo() {
-    const command = this.history.pop();
-    this.position = command.undo(this.position);
-  }
+	undo() {
+		const command = this.history.pop();
+		this.position = command.undo(this.position);
+	}
 }
 
 class AddCommand {
-  constructor(newPosition) {
-    this.newPosition = newPosition;
-  }
+	constructor(newPosition) {
+		this.newPosition = newPosition;
+	}
 
-  execute(currentValue) {
-    return currentValue + this.newPosition;
-  }
+	execute(currentValue) {
+		return currentValue + this.newPosition;
+	}
 
-  undo(currentValue) {
-    return currentValue - this.newPosition;
-  }
+	undo(currentValue) {
+		return currentValue - this.newPosition;
+	}
 }
 
 module.exports = {
-  Traverse,
-  AddCommand
-}
+	Traverse,
+	AddCommand,
+};

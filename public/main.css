@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 .scroll::-webkit-scrollbar {
- width: 5px; 
- background: theme('colors.neutral.900');
+	width: 5px;
+	background: theme("colors.neutral.900");
 }
 
 .scroll::-webkit-scrollbar-thumb {
- width: 5px; 
- background: theme('colors.neutral.800');
+	width: 5px;
+	background: theme("colors.neutral.800");
 }
