@@ -2,14 +2,20 @@ import React from "react";
 import CancelIcon from "@mui/icons-material/Cancel";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import atomOneDark from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-dark";
 
-function OutputContainer({ children }) {
-	return <div className="border-b border-neutral-800 past">{children}</div>;
+function OutputContainer({ children, error }) {
+	return (
+		<div className={`${!error ? "border-b border-neutral-800" : ""}`}>
+			{children}
+		</div>
+	);
 }
 
 function Output({ error, isInput, children }) {
-	let PrependIcon;
 	const style = "font-bold mr-1";
+	let PrependIcon;
 
 	if (!error) {
 		if (!isInput) {
@@ -37,7 +43,11 @@ function Output({ error, isInput, children }) {
 	}
 
 	return (
-		<div className="flex items-center">
+		<div
+			className={`flex items-center ${
+				error ? "bg-errorDarkRed border-y-[0.1rem] border-red-500" : ""
+			}`}
+		>
 			{PrependIcon}
 			<div className="pt-[0.2rem]">{children}</div>
 		</div>
@@ -49,9 +59,15 @@ export default function ConsoleOutput({ consol }) {
 		<>
 			{consol.map((consol, index) => {
 				return (
-					<OutputContainer key={index}>
+					<OutputContainer key={index} error={consol.error}>
 						<Output isInput={true}>
-							<p>{consol.input}</p>
+							<SyntaxHighlighter
+								language="javascript"
+								style={atomOneDark}
+								customStyle={{ background: "#1a1a1a", padding: 0 }}
+							>
+								{consol.input}
+							</SyntaxHighlighter>
 						</Output>
 						{consol.output ? (
 							consol.error ? (
@@ -71,6 +87,7 @@ export default function ConsoleOutput({ consol }) {
                       FIXME: 
                       - render objects without stringifying?
                     */}
+
 									<p>{JSON.stringify(consol.output)}</p>
 								</Output>
 							)

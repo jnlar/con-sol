@@ -16,6 +16,8 @@ function doCallback(callback) {
 	return typeof callback === "function" ? callback() : null;
 }
 
+// FIXME:
+// - fix consol traversal on up/down
 export default function App() {
 	const inputContainer = document.getElementById("input-container");
 	const [input, setInput] = useState("");
@@ -122,6 +124,7 @@ export default function App() {
 
 	return (
 		<>
+			<h1 className="pt-5 text-center">Con-Sol</h1>
 			<ConsoleOuterContainer>
 				<ConsoleInputContainer>
 					<ConsoleOutput consol={consol} />

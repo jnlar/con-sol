@@ -4,8 +4,11 @@ module.exports = {
 		extend: {
 			colors: {
 				dark: "#151515",
+				darkTwo: "#282828",
+				darkThree: "#1a1a1a",
 				darkBlue: "#1E283A",
-				errorRed: "#CB3936",
+				errorRed: "#ff3333",
+				errorDarkRed: "#602020",
 			},
 			fontSize: {
 				tiny: [
