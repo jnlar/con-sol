@@ -41,9 +41,8 @@ export default function App() {
 	}
 
 	function executeListener(e) {
-		if (e.key === "Enter" && e.target.value !== "") {
-			executeInput();
-		}
+		let wantNewLine = e.key === "Enter" && e.shiftKey;
+		if (e.key === "Enter" && !wantNewLine) executeInput();
 	}
 
 	function canTraverseBack(callback) {

@@ -7,7 +7,7 @@
     "jest": "^27.5.1",
     "jest-junit": "^13.0.0",
     "nodemon": "^2.0.15",
-    "npm": "^8.5.1",
+    "npm": "^8.5.2",
     "os-browserify": "^0.3.0",
     "parcel": "^2.3.1",
     "path-browserify": "^1.0.1",
@@ -29,9 +29,11 @@
     "outputName": "jest-junit.xml"
   },
   "dependencies": {
+    "@codemirror/lang-javascript": "^0.19.7",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.4.2",
     "@mui/material": "^5.4.2",
+    "@uiw/react-codemirror": "^4.5.1",
     "axios": "^0.26.0",
     "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
@@ -43,7 +45,6 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-syntax-highlighter": "^15.4.5",
-    "serve-favicon": "^2.5.0",
     "vm2": "^3.9.7"
   }
 }

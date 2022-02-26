@@ -3,6 +3,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import SyntaxHighlighter from "react-syntax-highlighter";
+// TODO: will be replaced with altered oneDark theme from codemirror
 import atomOneDark from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-dark";
 
 function OutputContainer({ children, error }) {
@@ -54,6 +55,10 @@ function Output({ error, isInput, children }) {
 	);
 }
 
+/*
+ * TODO:
+ * - Remove syntax highlighter component, replace with readonly codemirror component that has past execution inpout value
+ */
 export default function ConsoleOutput({ consol }) {
 	return (
 		<>
@@ -87,7 +92,6 @@ export default function ConsoleOutput({ consol }) {
                       FIXME: 
                       - render objects without stringifying?
                     */}
-
 									<p>{JSON.stringify(consol.output)}</p>
 								</Output>
 							)
