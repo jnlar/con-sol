@@ -1,3 +1,4 @@
+import { useState } from "react";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CodeMirror, { ViewUpdate } from "@uiw/react-codemirror";
 import { oneDarkAltered } from "../../theme/oneDarkAltered";
@@ -11,19 +12,13 @@ interface IConsoleInput {
 	input: string,
 }
 
-/*
- * FIXME:
- * - Fix newline on enter, we're still triggering newline event inside
- * 	 the editor when we aren't expecting to.
- * 	 see: node_modules/@codemirror/commands/dist/index.cjs	
- */
-export default function ConsoleInput(props: IConsoleInput): JSX.Element {
-	const {
-		setInput,
-		clearListener,
-		executeListener,
-		input,
-	} = props;
+export default function ConsoleInput({
+	setInput, 
+	clearListener, 
+	executeListener, 
+	input
+}: IConsoleInput): JSX.Element {
+	const [allowedToExecute, setAllowedToExecute] = useState<boolean>(false);
 
 	return (
 		<div className="my-1">
@@ -38,23 +33,34 @@ export default function ConsoleInput(props: IConsoleInput): JSX.Element {
 					 * - https://codemirror.net/6/docs/ref/#view.ViewPlugin
 					 */
 					onChange={(value: string, viewUpdate: ViewUpdate): void => {
-						console.log(viewUpdate)
 						viewUpdate.state.selection.ranges
 							.filter(range => range.empty)
 							.map(range => {
-								// TODO:
-								// - If cursor has nothing after it, dispatch the executeListener event with 'Enter' press
-								//   see for implementation: https://codemirror.net/6/examples/tooltip/
-								let line = viewUpdate.state.doc.lineAt(range.head)
-								let pos: number[] = [line.number, (range.head - line.from)]
-								console.log(pos)
+								/*
+								 * If the cursor has nothing after it, and we're at the last line, allow execution
+								 * 	see: https://codemirror.net/6/examples/tooltip/
+								 *	     node_modules/@codemirror/text/dist/index.d.ts
+								 * 
+								 * TODO: 
+								 * - If there's only one line, and we aren't at range.head, still allow execution anyway.
+								 *   We'll also need customise our own keymap feature. 
+								 *   see: node_modules/@codemirror/commands/dist/index.js
+								 */        
+								let line = viewUpdate.state.doc.lineAt(range.head);
+								let lines: number = viewUpdate.state.doc.lines;
+								if (/* position of cursor */(range.head - line.from) === line.length) {
+									if (line.number === lines) {
+										setAllowedToExecute(true);
+									} 
+								} else {
+									setAllowedToExecute(false);
+								}
 							})
-
 						setInput(value);
 					}}
 					onKeyDown={(e): void => {
 						clearListener(e);
-						executeListener(e);
+						if (allowedToExecute) executeListener(e);
 					}}
 					className="w-[97%]"
 					value={input}
