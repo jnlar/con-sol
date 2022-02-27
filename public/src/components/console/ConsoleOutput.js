@@ -15,7 +15,7 @@ function OutputContainer({ children, error }) {
 }
 
 function Output({ error, isInput, children }) {
-	const style = "font-bold mr-1";
+	const style = "font-bold mr-1 mt-[0.08rem]";
 	let PrependIcon;
 
 	if (!error) {
@@ -45,8 +45,10 @@ function Output({ error, isInput, children }) {
 
 	return (
 		<div
-			className={`flex items-center ${
-				error ? "bg-errorDarkRed border-y-[0.1rem] border-red-500" : ""
+			className={`flex ${
+				error
+					? "bg-errorDarkRed border-y-[0.1rem] border-red-500 items-baseline"
+					: "items-top"
 			}`}
 		>
 			{PrependIcon}
@@ -77,18 +79,11 @@ export default function ConsoleOutput({ consol }) {
 						{consol.output ? (
 							consol.error ? (
 								<Output error={true}>
-									{/*
-                      TODO:
-                      - error stack trace?
-                    */}
 									<p className="pl-1 text-errorRed">{consol.output}</p>
 								</Output>
 							) : (
 								<Output>
 									{/*
-                      TODO:
-                      - functions return undefined if we just try to reference it in the console,
-                        e.g a function def such as fn = () => 1 should return exactly that if we input 'fn' into the console
                       FIXME: 
                       - render objects without stringifying?
                     */}
