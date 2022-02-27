@@ -1,27 +1,20 @@
 import React from "react";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CodeMirror from "@uiw/react-codemirror";
-import { javascript } from "@codemirror/lang-javascript";
 import { oneDarkAltered } from "../../theme/oneDarkAltered";
-import { gutter, GutterMarker } from "@codemirror/gutter";
-
-/*
- * FIXME:
- * Generally there's a "switch" for this kind of thing, but I haven't found it yet :^)
- * It's probably somewhere here: https://github.com/uiwjs/react-codemirror/blob/master/src/index.tsx
- */
-class RemoveGutters extends GutterMarker {
-	constructor() {
-		return null;
-	}
-}
+import { codeMirrorDefaults } from "../../config/codeMirrorDefaults";
 
 /*
  * TODO:
  * - Additional styling to CoreMirror theme
+
  * - Event handling to match console behaviour (define this better)
+ * 
  * - Fix newline on enter, we're still triggering newline event inside
  * 	 the editor when we aren't expecting to.
+ * 	 see: node_modules/@codemirror/commands/dist/index.cjs	
+ * 
+ * - If the user beaks into a newline, enable current line highlighting
  */
 export default function ConsoleInput(props) {
 	const { setInput, traverseListener, clearListener, executeListener, input } =
@@ -40,7 +33,6 @@ export default function ConsoleInput(props) {
 						 * - https://github.com/uiwjs/react-codemirror/blob/master/src/index.tsx#L47
 						 * - https://codemirror.net/6/docs/ref/#view.ViewPlugin
 						 */
-						console.log(viewUpdate);
 						setInput(value);
 					}}
 					onKeyDown={(e) => {
@@ -51,15 +43,8 @@ export default function ConsoleInput(props) {
 					className="w-[97%]"
 					value={input}
 					theme={oneDarkAltered}
-					extensions={[
-						javascript(),
-						gutter({
-							class: "cm-gutters",
-							lineMarker() {
-								return new RemoveGutters();
-							},
-						}),
-					]}
+					basicSetup={false}
+					extensions={[codeMirrorDefaults]}
 				/>
 			</div>
 		</div>

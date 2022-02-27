@@ -21,7 +21,7 @@ const chalky = "#e5c07b",
 /**
 The editor theme styles for One Dark.
 */
-const oneDarkTheme = /*@__PURE__*/ EditorView.theme(
+const oneDarkThemeAltered = /*@__PURE__*/ EditorView.theme(
 	{
 		"&": {
 			color: ivory,
@@ -159,6 +159,6 @@ const oneDarkHighlightStyle = /*@__PURE__*/ HighlightStyle.define([
 Extension to enable the One Dark theme (both the editor theme and
 the highlight style).
 */
-const oneDarkAltered = [oneDarkTheme, oneDarkHighlightStyle];
+const oneDarkAltered = [oneDarkThemeAltered, oneDarkHighlightStyle];
 
-export { oneDarkAltered, oneDarkHighlightStyle, oneDarkTheme };
+export { oneDarkAltered, oneDarkHighlightStyle, oneDarkThemeAltered };
