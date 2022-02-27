@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import axios from "axios";
+import { useState } from "react";
+import axios, { AxiosResponse } from "axios";
 axios.defaults.withCredentials = true;
 
 import ConsoleInput from "./components/console/ConsoleInput";
@@ -8,31 +8,37 @@ import ConsoleOutput from "./components/console/ConsoleOutput";
 import ConsoleOuterContainer from "./components/console/containers/ConsoleOuterContainer";
 import { Traverse, AddCommand } from "./util/command";
 
+interface IConsole {
+	input: string;
+	output: string;
+	error: boolean;
+}
+
 const traverse = new Traverse();
 
-const scrollToBottom = (node) => (node.scrollTop = node.scrollHeight);
+const scrollToBottom = (node: any) => (node.scrollTop = node.scrollHeight);
 
-function doCallback(callback) {
+function doCallback(callback: () => void): void | null {
 	return typeof callback === "function" ? callback() : null;
 }
 
 // FIXME:
 // - fix consol traversal on up/down
-export default function App() {
-	const inputContainer = document.getElementById("input-container");
+export default function App(): JSX.Element {
+	const inputContainer: HTMLElement | null = document.getElementById("input-container");
 	const [input, setInput] = useState("");
-	const [consol, setConsol] = useState([]);
+	const [consol, setConsol] = useState<IConsole[]>([]);
 	const [inputsHistory, setInputsHistory] = useState([]);
-	const [firstTraversal, setFirstTraversal] = useState(true);
+	const [firstTraversal, setFirstTraversal] = useState<boolean>(true);
 
-	function clearListener(e) {
+	function clearListener(e: KeyboardEvent): void {
 		if (e.key === "l" && e.ctrlKey) {
 			e.preventDefault();
 			setConsol([]);
 		}
 	}
 
-	function traverseListener(e) {
+	function traverseListener(e: KeyboardEvent): void {
 		if (e.key === "ArrowUp") {
 			return traverseBack();
 		} else if (e.key === "ArrowDown") {
@@ -40,12 +46,12 @@ export default function App() {
 		}
 	}
 
-	function executeListener(e) {
-		let wantNewLine = e.key === "Enter" && e.shiftKey;
+	function executeListener(e: KeyboardEvent): void {
+		let wantNewLine: boolean = e.key === "Enter" && e.shiftKey;
 		if (e.key === "Enter" && !wantNewLine) executeInput();
 	}
 
-	function canTraverseBack(callback) {
+	function canTraverseBack(callback: () => void): void | null {
 		if (inputsHistory.length) {
 			if (traverse.position !== inputsHistory.length) {
 				return doCallback(callback);
@@ -57,7 +63,7 @@ export default function App() {
 		);
 	}
 
-	function canTraverseForward(callback) {
+	function canTraverseForward(callback: () => void): void | null {
 		if (traverse.position !== 1) {
 			return doCallback(callback);
 		}
@@ -67,34 +73,34 @@ export default function App() {
 		);
 	}
 
-	function traverseBack() {
+	function traverseBack(): void {
 		if (firstTraversal) {
-			canTraverseBack(() => {
+			canTraverseBack((): void => {
 				setFirstTraversal(false);
 				return setInputToHistory(1);
 			});
 		} else {
-			canTraverseBack(() => {
+			canTraverseBack(() : void => {
 				traverse.executeCommand(new AddCommand(1));
-				let position = traverse.position;
+				let position: number = traverse.position;
 				return setInputToHistory(position);
 			});
 		}
 	}
 
-	function traverseForward() {
-		canTraverseForward(() => {
+	function traverseForward(): void {
+		canTraverseForward((): void => {
 			traverse.undo();
-			let position = traverse.position;
+			let position: number = traverse.position;
 			return setInputToHistory(position);
 		});
 	}
 
-	function setInputToHistory(position) {
+	function setInputToHistory(position: number): void {
 		return setInput(inputsHistory[inputsHistory.length - position]);
 	}
 
-	async function executeInput() {
+	async function executeInput(): Promise<any> {
 		setInput("");
 
 		if (input === "clear") {
@@ -102,7 +108,7 @@ export default function App() {
 		}
 
 		try {
-			let res = await axios.post(`http://localhost:8080/api`, {
+			let res: AxiosResponse<any> = await axios.post(`http://localhost:8080/api`, {
 				run: `${input}`,
 			});
 
@@ -116,7 +122,7 @@ export default function App() {
 			]);
 
 			return scrollToBottom(inputContainer);
-		} catch (err) {
+		} catch (err: any) {
 			throw new Error(err);
 		}
 	}
