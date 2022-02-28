@@ -8,15 +8,14 @@ import ConsoleOutput from "./components/console/ConsoleOutput";
 import ConsoleOuterContainer from "./components/console/containers/ConsoleOuterContainer";
 import { Traverse, AddCommand } from "./util/command";
 
-interface IConsole {
-	input: string;
-	output: string;
-	error: boolean;
+export interface IConsole {
+	input?: string;
+	output?: string;
+	error?: boolean;
 }
 
 const traverse = new Traverse();
-
-const scrollToBottom = (node: any) => (node.scrollTop = node.scrollHeight);
+const scrollToBottom = (node: HTMLElement | null): number => (node!.scrollTop = node!.scrollHeight);
 
 function doCallback(callback: () => void): void | null {
 	return typeof callback === "function" ? callback() : null;
@@ -26,7 +25,7 @@ function doCallback(callback: () => void): void | null {
 // - fix consol traversal on up/down
 export default function App(): JSX.Element {
 	const inputContainer: HTMLElement | null = document.getElementById("input-container");
-	const [input, setInput] = useState("");
+	const [input, setInput] = useState<string>("");
 	const [consol, setConsol] = useState<IConsole[]>([]);
 	const [inputsHistory, setInputsHistory] = useState([]);
 	const [firstTraversal, setFirstTraversal] = useState<boolean>(true);

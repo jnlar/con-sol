@@ -1,12 +1,10 @@
-import React from "react";
-
-export default function ConsoleInputContainer(props) {
+export default function ConsoleInputContainer({ children }: any): JSX.Element {
 	return (
 		<div
 			id="input-container"
 			className="bg-darkThree text-tiny w-full h-full overflow-auto scroll"
 		>
-			{props.children}
+			{children}
 		</div>
 	);
 }

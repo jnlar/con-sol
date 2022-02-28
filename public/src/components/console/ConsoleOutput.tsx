@@ -1,12 +1,18 @@
-import React from "react";
 import CancelIcon from "@mui/icons-material/Cancel";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import SyntaxHighlighter from "react-syntax-highlighter";
 // TODO: will be replaced with altered oneDark theme from codemirror
 import atomOneDark from "react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-dark";
+import { IConsole } from "../../App";
 
-function OutputContainer({ children, error }) {
+interface IOutput {
+	readonly error?: boolean;
+	readonly isInput?: boolean;
+	children: any;
+}
+
+function OutputContainer({ children, error }: IOutput): JSX.Element {
 	return (
 		<div className={`${!error ? "border-b border-neutral-800" : ""}`}>
 			{children}
@@ -14,7 +20,7 @@ function OutputContainer({ children, error }) {
 	);
 }
 
-function Output({ error, isInput, children }) {
+function Output({ error, isInput, children }: IOutput): JSX.Element{
 	const style = "font-bold mr-1 mt-[0.08rem]";
 	let PrependIcon;
 
@@ -57,14 +63,25 @@ function Output({ error, isInput, children }) {
 	);
 }
 
+interface IConsoleOuput extends IConsole {
+	[key: string]: 
+		number | 
+		boolean | 
+		string | 
+		any; 
+		input: string;
+		output: string;
+		error: boolean;
+}
+
 /*
  * TODO:
  * - Remove syntax highlighter component, replace with readonly codemirror component that has past execution inpout value
  */
-export default function ConsoleOutput({ consol }) {
+export default function ConsoleOutput({ consol }: IConsoleOuput): JSX.Element {
 	return (
 		<>
-			{consol.map((consol, index) => {
+			{consol.map((consol: IConsole, index: number): JSX.Element | HTMLElement => {
 				return (
 					<OutputContainer key={index} error={consol.error}>
 						<Output isInput={true}>

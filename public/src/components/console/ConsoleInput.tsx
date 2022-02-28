@@ -19,6 +19,8 @@ export default function ConsoleInput({
 	input
 }: IConsoleInput): JSX.Element {
 	const [allowedToExecute, setAllowedToExecute] = useState<boolean>(false);
+	const [allowedToTraverseForward, setAllowedToTraverseForward] = useState<boolean>(false);
+	const [allowedToTraverseBackward, setAllowedToTraverseBackward] = useState<boolean>(false);
 
 	return (
 		<div className="my-1">
@@ -51,9 +53,11 @@ export default function ConsoleInput({
 								if (/* position of cursor */(range.head - line.from) === line.length) {
 									if (line.number === lines) {
 										setAllowedToExecute(true);
+										setAllowedToTraverseForward(true);
 									} 
 								} else {
 									setAllowedToExecute(false);
+									setAllowedToTraverseForward(false);
 								}
 							})
 						setInput(value);

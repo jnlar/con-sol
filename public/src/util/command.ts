@@ -1,35 +1,35 @@
-class Traverse {
+export class Traverse {
+	position: number;
+	history: any[];
+
 	constructor() {
 		this.position = 1;
 		this.history = [];
 	}
 
-	executeCommand(command) {
+	executeCommand(command: any): void {
 		this.position = command.execute(this.position);
 		this.history.push(command);
 	}
 
-	undo() {
-		const command = this.history.pop();
+	undo(): void {
+		const command: any = this.history.pop();
 		this.position = command.undo(this.position);
 	}
 }
 
-class AddCommand {
-	constructor(newPosition) {
+export class AddCommand {
+	newPosition: number;
+
+	constructor(newPosition: number) {
 		this.newPosition = newPosition;
 	}
 
-	execute(currentValue) {
+	execute(currentValue: number): any {
 		return currentValue + this.newPosition;
 	}
 
-	undo(currentValue) {
+	undo(currentValue: number): number {
 		return currentValue - this.newPosition;
 	}
 }
-
-module.exports = {
-	Traverse,
-	AddCommand,
-};
