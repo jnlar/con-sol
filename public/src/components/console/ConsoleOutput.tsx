@@ -69,9 +69,6 @@ interface IConsoleOuput extends IConsole {
 		boolean | 
 		string | 
 		any; 
-		input: string;
-		output: string;
-		error: boolean;
 }
 
 /*

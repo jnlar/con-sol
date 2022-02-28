@@ -27,7 +27,6 @@ export default function App(): JSX.Element {
 	const inputContainer: HTMLElement | null = document.getElementById("input-container");
 	const [input, setInput] = useState<string>("");
 	const [consol, setConsol] = useState<IConsole[]>([]);
-	const [inputsHistory, setInputsHistory] = useState([]);
 	const [firstTraversal, setFirstTraversal] = useState<boolean>(true);
 
 	function clearListener(e: KeyboardEvent): void {
@@ -51,8 +50,8 @@ export default function App(): JSX.Element {
 	}
 
 	function canTraverseBack(callback: () => void): void | null {
-		if (inputsHistory.length) {
-			if (traverse.position !== inputsHistory.length) {
+		if (consol.length) {
+			if (traverse.position !== consol.length) {
 				return doCallback(callback);
 			}
 		}
@@ -96,7 +95,7 @@ export default function App(): JSX.Element {
 	}
 
 	function setInputToHistory(position: number): void {
-		return setInput(inputsHistory[inputsHistory.length - position]);
+		return setInput(String(consol[consol.length - position].input));
 	}
 
 	async function executeInput(): Promise<any> {
