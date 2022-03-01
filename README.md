@@ -9,6 +9,16 @@ JavaScript console app, for learning purposes. 💻
 
 ![con-sol](https://github.com/jnlar/con-sol/blob/main/img/screenshot.png?raw=true)
 
+### Setup
+You'll need to have [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/) setup on your machine.
+```shell
+# first build
+docker-compose up -d --build
+
+# every other build
+dockercompose up -d
+```
+
 ### s.t.a.c.k
 - [node](https://github.com/nodejs/node)
 - [nginx](https://www.nginx.com/)

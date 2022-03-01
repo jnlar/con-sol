@@ -4,6 +4,7 @@
   "devDependencies": {
     "@types/react": "^17.0.39",
     "@types/react-syntax-highlighter": "^13.5.2",
+    "concurrently": "^7.0.0",
     "crypto-browserify": "^3.12.0",
     "jest": "^27.5.1",
     "jest-junit": "^13.0.0",
@@ -19,8 +20,9 @@
     "tailwindcss": "^3.0.18"
   },
   "scripts": {
+    "start": "concurrently \"npm:server\" \"npm:client\" \"npm:dev\"",
     "server": "nodemon ./src/app.js",
-    "client": "parcel",
+    "client": "parcel --port 1234",
     "client-build": "parcel build",
     "dev": "npx tailwindcss -i ./public/main.css -o ./dist/main.css --watch",
     "tests": "jest --ci --reporters=default --reporters=jest-junit"
