@@ -16,7 +16,7 @@ You'll need to have [docker](https://docs.docker.com/get-docker/) and [docker-co
 docker-compose up -d --build
 
 # every other build
-dockercompose up -d
+docker-compose up -d
 ```
 
 ### s.t.a.c.k
