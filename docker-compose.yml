@@ -11,9 +11,9 @@ services:
       - .:/var/www/app
     working_dir: /var/www/app
     environment:
-      - DB_HOST=$DB_HOST
       - DB_USER=$DB_USER
       - DB_PASSWORD=$DB_PASS
+      - DB_HOST=$DB_HOST
       - DB_NAME=$DB_NAME
       - DB_PORT=$DB_PORT
     depends_on:

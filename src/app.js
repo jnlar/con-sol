@@ -17,7 +17,7 @@ const vmRouter = express.Router();
 const sessionConfig = {
 	resave: false,
 	saveUninitialized: false,
-	secret: process.env.SECRET,
+	secret: process.env.SESSION_SECRET,
 	name: process.env.SESSION_NAME,
 	store: MongoStore.create({
 		mongoUrl: dbConfig.url,

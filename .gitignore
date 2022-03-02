@@ -5,3 +5,4 @@ db.env
 .vscode
 .parcel-cache
 coverage
+NOTES.md

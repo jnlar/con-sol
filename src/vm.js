@@ -27,18 +27,12 @@ async function run(req, res) {
 
 	try {
 		let hasSessionBool = await hasSession(dbConfig.url, req.session.id);
-
 		// FIXME: quick hack for now so we aren't constantly writing new sessions to the store
 		req.session.lastExecution = {
 			date: new Date().toISOString(),
 		};
-
-		if (!hasSessionBool) {
-			vms.set(currentSession, { vm: create() });
-			return res.send({ result: execute(currentSession, vms, req) });
-		} else {
-			return res.send({ result: execute(currentSession, vms, req) });
-		}
+		if (!hasSessionBool) vms.set(currentSession, { vm: create() });
+		return res.send({ result: execute(currentSession, vms, req) });
 	} catch (err) {
 		console.log(err.stack);
 		return res.send({ error: err.toString() });
