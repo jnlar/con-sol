@@ -22,34 +22,6 @@ import { defaultHighlightStyle } from "@codemirror/highlight";
 import { lintKeymap } from "@codemirror/lint";
 import { javascript } from "@codemirror/lang-javascript";
 
-/*
- * When we are on the first line, allow execution  
- *
- * TODO:
- * - 
- */
-function handleFirstLineExecute() {
-	return ({ state }) => {
-		let ce;
-		state.selection.ranges
-		.filter(range => range.empty)
-		.map(range => {
-			let line = state.doc.lineAt(range.head);
-			let lines = state.doc.lines;
-			let cursorPos = range.head - line.from;
-			// If we're at the first line, or the cursor is at the end
-			// of the last line, allow execution
-			cursorPos === line.length && lines === line.number || lines === 1 ? ce = true : ce = false;
-			console.log(ce)
-		})
-		return ce;
-	}
-}
-
-const customKeyMap = [
-	{ key: "Enter", run: handleFirstLineExecute() }
-]
-
 /**
 This is an extension value that just pulls together a whole lot of
 extensions that you might want in a basic editor. It is meant as a
