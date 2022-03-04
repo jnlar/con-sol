@@ -20,10 +20,7 @@ interface IConsoleInput {
 * - https://github.com/codemirror/commands/blob/main/src/commands.ts#L595
 */
 function isBetweenBrackets(state: EditorState, pos: number): boolean {
-	if (/\(\)|\[\]|\{\}/.test(state.sliceDoc(pos - 1, pos + 1))) {
-		return true
-	}
-	return false
+	return (/\(\)|\[\]|\{\}/.test(state.sliceDoc(pos - 1, pos + 1))) || false;
 }
 
 /*
