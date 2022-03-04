@@ -74,7 +74,6 @@ const codeMirrorDefaults = [
 	/*@__PURE__*/ highlightActiveLine(),
 	/*@__PURE__*/ highlightSelectionMatches(),
 	/*@__PURE__*/ keymap.of([
-		//...customKeyMap,
 		...closeBracketsKeymap,
 		...defaultKeymap,
 		...searchKeymap,

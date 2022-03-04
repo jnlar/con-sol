@@ -1,9 +1,9 @@
 import { useState } from "react";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import CodeMirror, { keymap } from "@uiw/react-codemirror";
+import CodeMirror, { EditorState, keymap } from "@uiw/react-codemirror";
 import { oneDarkAltered } from "../../theme/oneDarkAltered";
 import { codeMirrorDefaults } from "../../config/codeMirrorDefaults";
-import { KeyBinding, Command } from '@codemirror/view';
+import { KeyBinding } from '@codemirror/view';
 
 interface IConsoleInput {
 	setInput: any;
@@ -11,6 +11,47 @@ interface IConsoleInput {
 	executeListener: any,
 	traverseListener: any;
 	input: string,
+}
+
+/*
+* isBetweenBrackets isn't exported, so we just took logic we need
+*
+* see: 
+* - https://github.com/codemirror/commands/blob/main/src/commands.ts#L595
+*/
+function isBetweenBrackets(state: EditorState, pos: number): boolean {
+	if (/\(\)|\[\]|\{\}/.test(state.sliceDoc(pos - 1, pos + 1))) {
+		return true
+	}
+	return false
+}
+
+/*
+* see: 
+* - https://codemirror.net/6/docs/ref/#commands
+* - https://codemirror.net/6/docs/ref/#view.Command
+* - https://codemirror.net/6/docs/guide/
+*/
+function handleEnterKeyContext(
+	setAllowedToExecute: React.Dispatch<React.SetStateAction<boolean>>
+): ({ state }: any) => boolean {
+	let context: boolean;
+	return ({ state }) => {
+		state.selection.ranges
+			.filter((range: { empty: any; }): any => range.empty)
+			.map((range: { head: number; }): void => {
+				let line = state.doc.lineAt(range.head);
+				let lines = state.doc.lines;
+				let cursorPos = range.head - line.from;
+				let atEndOfText = cursorPos === line.length && lines === line.number
+				context = 
+					atEndOfText || (lines === 1 || line.number === 1) 
+					&& !isBetweenBrackets(state, cursorPos) 
+					? true : false
+			})
+		setAllowedToExecute(context);
+		return context;
+	}
 }
 
 export default function ConsoleInput({
@@ -21,43 +62,8 @@ export default function ConsoleInput({
 }: IConsoleInput): JSX.Element {
 	const [allowedToExecute, setAllowedToExecute] = useState<boolean>(false);
 
-	/*
-	* see: 
-	* - https://codemirror.net/6/docs/ref/#commands
-	* - https://codemirror.net/6/docs/ref/#view.Command
-	* - https://codemirror.net/6/docs/guide/
-	*
-	* FIXME:
-	* - detect if we're inside some type of bracket, and return false so 
-	*   we can continue down the command list 
-	* - fix history traversal (again)
-	*/
-	function handleEnterKeyContext() {
-		return ({ state }: any): boolean => {
-			let cx: boolean = state.selection.ranges
-				.filter((range: { empty: any; }) => range.empty)
-				.map((range: { head: number; }) => {
-					let line = state.doc.lineAt(range.head);
-					let lines = state.doc.lines;
-					let cursorPos = range.head - line.from;
-					if (
-						cursorPos === line.length &&
-						lines === line.number ||
-						lines === 1
-					) {
-						setAllowedToExecute(true);
-						return true;
-					} else {
-						setAllowedToExecute(false);
-						return false;
-					}
-				})
-				return cx;
-		}
-	}
-
 	const enterKeyAlter: readonly KeyBinding[] = [
-		{ key: "Enter", run: handleEnterKeyContext() }
+		{ key: "Enter", run: handleEnterKeyContext(setAllowedToExecute) }
 	]
 
 	return (
