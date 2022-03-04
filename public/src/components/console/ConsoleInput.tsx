@@ -1,8 +1,9 @@
 import { useState } from "react";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import CodeMirror, { keymap, ViewUpdate } from "@uiw/react-codemirror";
+import CodeMirror, { keymap } from "@uiw/react-codemirror";
 import { oneDarkAltered } from "../../theme/oneDarkAltered";
 import { codeMirrorDefaults } from "../../config/codeMirrorDefaults";
+import { KeyBinding, Command } from '@codemirror/view';
 
 interface IConsoleInput {
 	setInput: any;
@@ -32,11 +33,10 @@ export default function ConsoleInput({
 	* - fix history traversal (again)
 	*/
 	function handleEnterKeyContext() {
-		return ({ state }) => {
-			let ce;
-			state.selection.ranges
-				.filter(range => range.empty)
-				.map(range => {
+		return ({ state }: any): boolean => {
+			let cx: boolean = state.selection.ranges
+				.filter((range: { empty: any; }) => range.empty)
+				.map((range: { head: number; }) => {
 					let line = state.doc.lineAt(range.head);
 					let lines = state.doc.lines;
 					let cursorPos = range.head - line.from;
@@ -45,25 +45,25 @@ export default function ConsoleInput({
 						lines === line.number ||
 						lines === 1
 					) {
-						ce = true;
 						setAllowedToExecute(true);
+						return true;
 					} else {
-						ce = false;
 						setAllowedToExecute(false);
+						return false;
 					}
 				})
-			return ce;
+				return cx;
 		}
 	}
 
-	const enterKeyAlter = [
+	const enterKeyAlter: readonly KeyBinding[] = [
 		{ key: "Enter", run: handleEnterKeyContext() }
 	]
 
 	return (
 		<div className="my-1">
 			<div className="w-full flex">
-				<span className="text-blue-500 w-[3%] font-bold pr-1">
+				<span className="text-blue-500 w-[2.4%] font-bold">
 					<ChevronRightIcon sx={{ fontSize: 20 }} />
 				</span>
 				<CodeMirror
